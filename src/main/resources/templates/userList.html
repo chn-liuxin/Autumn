@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>UserList</title>
+</head>
+<body>
+    <h2 align="center">用户列表</h2>
+    <table border="2" align="center">
+        <tr th:each="user,userStat:${users}">
+            <td th:text="${user.username}">username</td>
+            <td th:text="${user.password}">password</td>
+        </tr>
+    </table>
+</body>
+</html>
