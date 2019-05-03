@@ -1,7 +1,7 @@
 package edu.cuit.autumn.entity;
 
 public class Record {
-    private Integer recordId;
+    private String recordId;
 
     private Byte type;
 
@@ -15,11 +15,11 @@ public class Record {
 
     private Boolean isComplete;
 
-    public Integer getRecordId() {
+    public String getRecordId() {
         return recordId;
     }
 
-    public void setRecordId(Integer recordId) {
+    public void setRecordId(String recordId) {
         this.recordId = recordId;
     }
 

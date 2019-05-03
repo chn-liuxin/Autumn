@@ -10,7 +10,7 @@ public interface UserService {
     public List<User> getAllUser();
 
     // 根据ID获取用户
-    public User getUserById(Integer userId);
+    public User getUserById(String userId);
 
     // 根据姓名获取用户
     public User getUserByName(String username);
@@ -19,6 +19,12 @@ public interface UserService {
     public List<User> getUserByIdentity(Integer userIdentity);
 
     // 根据ID删除用户
-    public void deleteUser(Integer userId);
+    public void deleteUser(String userId);
+
+    // 更新用户信息
+    public void updateUser(User user);
+
+    // 新增用户
+    void insertUser(User user);
 
 }

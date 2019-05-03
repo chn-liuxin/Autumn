@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     // 根据ID获取用户
     @Override
-    public User getUserById(Integer userId) {
+    public User getUserById(String userId) {
         return userMapper.getUserById(userId);
     }
 
@@ -40,8 +40,19 @@ public class UserServiceImpl implements UserService {
 
     // 根据ID删除用户
     @Override
-    public void deleteUser(Integer userId) {
+    public void deleteUser(String userId) {
         userMapper.deleteUser(userId);
+    }
+
+    // 更新用户信息
+    @Override
+    public void updateUser(User user) {
+        userMapper.updateUser(user);
+    }
+
+    // 新增用户
+    public void insertUser(User user) {
+        userMapper.insertUser(user);
     }
 
 }

@@ -7,7 +7,7 @@ public class User {
      * @Param userName：用户名
      * @Param userPassword：用户密码
      */
-    private Integer userId;
+    private String userId;
 
     private Short userIdentity;
 
@@ -15,11 +15,11 @@ public class User {
 
     private String userPassword;
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -45,5 +45,10 @@ public class User {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword == null ? null : userPassword.trim();
+    }
+
+    @Override
+    public String toString() {
+        return userId + "\t" + userIdentity + "\t" + userName + "\t" + userPassword;
     }
 }

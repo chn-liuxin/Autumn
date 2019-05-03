@@ -5,7 +5,7 @@ import java.util.Date;
 public class Teacher {
     private String teacherId;
 
-    private Integer userId;
+    private String userId;
 
     private String teacherName;
 
@@ -25,11 +25,11 @@ public class Teacher {
         this.teacherId = teacherId == null ? null : teacherId.trim();
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

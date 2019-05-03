@@ -12,6 +12,8 @@ drop table if exists teacher;
 
 drop table if exists user;
 
+drop table if exists class;
+
 /*==============================================================*/
 /* Table: class                                                 */
 /*==============================================================*/
@@ -46,7 +48,7 @@ create table lesson
 /*==============================================================*/
 create table record
 (
-   record_id            int not null,
+   record_id            varchar(10) not null,
    type                 tinyint not null,
    teacher_id           varchar(10) not null,
    review_teacher_id    varchar(10) not null,
@@ -143,7 +145,7 @@ create table subject
 create table teacher
 (
    teacher_id           varchar(10) not null,
-   user_id              int not null,
+   user_id              varchar(10) not null,
    teacher_name         varchar(10) not null,
    teacher_sex          char(2) not null,
    teacher_birthday     date,
@@ -157,7 +159,7 @@ create table teacher
 /*==============================================================*/
 create table user
 (
-   user_id              int not null,
+   user_id              varchar(10) not null,
    user_identity        smallint not null,
    user_name            varchar(15) not null,
    user_password        varchar(15) not null,

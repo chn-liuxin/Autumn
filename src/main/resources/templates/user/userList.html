@@ -8,8 +8,8 @@
     <h2 align="center">用户列表</h2>
     <table border="2" align="center">
         <tr th:each="user,userStat:${users}">
-            <td th:text="${user.username}">username</td>
-            <td th:text="${user.password}">password</td>
+            <td th:text="${user.userName}">username</td>
+            <td th:text="${user.userPassword}">password</td>
         </tr>
     </table>
 </body>

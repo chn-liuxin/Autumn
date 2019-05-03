@@ -2,7 +2,9 @@ package edu.cuit.autumn.mapper;
 
 import edu.cuit.autumn.entity.User;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public interface UserMapper {
      * @return User
      */
     @Select("select * from user where user_id=#{userId}")
-    User getUserById(Integer userId);
+    User getUserById(String userId);
 
     /**
      * 根据username查找用户
@@ -46,6 +48,18 @@ public interface UserMapper {
      * @param userId
      */
     @Delete("delete from user where user_id=#{userId}")
-    void deleteUser(Integer userId);
+    void deleteUser(String userId);
+
+    /**
+     * 更新用户信息
+     */
+    @Update("update user set user_name=#{userName},user_password=#{userPassword},user_identity=#{userIdentity} where user_id=#{userId}")
+    void updateUser(User user);
+
+    /**
+     * 增加用户
+     */
+    @Insert("insert into user(user_id,user_identity,user_name,user_password) values(#{userId},#{userIdentity},#{userName},#{userPassword})")
+    void insertUser(User user);
 
 }
