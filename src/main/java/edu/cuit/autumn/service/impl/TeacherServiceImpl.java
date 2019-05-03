@@ -28,6 +28,7 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherMapper.getTeacherByName(teacherName);
     }
 
+    // 新增一个老师的同时在用户表里添加一个用户
     @Override
     public void insertTeacher(Teacher teacher) {
         teacherMapper.insertTeacher(teacher);
