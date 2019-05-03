@@ -1,6 +1,13 @@
 package edu.cuit.autumn.entity;
 
 public class Class {
+
+    /**
+     * @Param classId：主键ID
+     * @Param classSession：年级,如:16级
+     * @Param classMajor：专业名称,如:计算机科学与技术
+     * @Param classNumber：班级,如:2班
+     */
     private String classId;
 
     private Short classSession;
