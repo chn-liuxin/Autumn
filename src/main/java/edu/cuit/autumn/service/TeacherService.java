@@ -21,4 +21,6 @@ public interface TeacherService {
     // 修改老师信息
     void updateTeacher(Teacher teacher);
 
+    Teacher getTeacherById(String teacherId);
+
 }

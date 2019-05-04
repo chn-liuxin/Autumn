@@ -18,4 +18,6 @@ public interface ClassService {
 
     void updateClass(Class aClass);
 
+    Class getClassById(String classId);
+
 }

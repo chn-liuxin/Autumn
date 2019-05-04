@@ -21,12 +21,15 @@ public interface TeacherMapper {
     List<Teacher> getAllTeacher();
 
     /**
-     * 根据teacherName模糊查找用户
+     * 根据teacherName查找用户
      * @param teacherName
      * @return User
      */
-    @Select("select * from teacher where teacher_name like %#{teacherName}%")
+    @Select("select * from teacher where teacher_name=#{teacherName}")
     List<Teacher> getTeacherByName(String teacherName);
+
+    @Select("select * from teacher where teacher_id=#{teacherId}")
+    Teacher getTeacherById(String teacherId);
 
     /**
      * 根据teacherId删除老师

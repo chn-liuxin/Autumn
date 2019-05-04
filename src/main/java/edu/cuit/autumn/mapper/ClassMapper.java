@@ -28,6 +28,9 @@ public interface ClassMapper {
     @Select("select * from class where class_major=#{classMajor}")
     List<Class> getClassByMajor(String classMajor);
 
+    @Select("select * from class where class_id=#{classId}")
+    Class getClassById(String classId);
+
     /**
      * 根据年级查找班级
      * @param classSession

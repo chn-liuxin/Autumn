@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LessonImpl implements LessonService {
+public class LessonServiceImpl implements LessonService {
 
     @Autowired
     LessonMapper lessonMapper;

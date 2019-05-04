@@ -19,6 +19,9 @@ public interface SubjectMapper {
     @Select("select * from subject where subject_type=#{subjectType}")
     List<Subject> getSubjectByType(String subjectType);
 
+    @Select("select * from subject where subject_id=#{subjectId}")
+    Subject getSubjectById(String subjectId);
+
     @Insert("insert into subject values(#{subjectId},#{subjectName},#{subjectCredit},#{subjectHour},#{subjectType},#{subjectStartTime},#{subjectEndTime})")
     void insertSubject(Subject subject);
 

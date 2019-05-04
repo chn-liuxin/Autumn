@@ -16,4 +16,6 @@ public interface SubjectService {
 
     void updateSubject(Subject subject);
 
+    Subject getSubjectById(String subjectId);
+
 }

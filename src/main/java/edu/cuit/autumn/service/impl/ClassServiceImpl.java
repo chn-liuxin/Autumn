@@ -43,4 +43,9 @@ public class ClassServiceImpl implements ClassService {
     public void updateClass(Class aClass) {
         classMapper.updateClass(aClass);
     }
+
+    @Override
+    public Class getClassById(String classId) {
+        return classMapper.getClassById(classId);
+    }
 }
