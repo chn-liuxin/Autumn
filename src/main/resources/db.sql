@@ -38,7 +38,7 @@ create table lesson
    subject_start_time   tinyint not null,
    subject_end_time     tinyint not null,
    lesson_day           tinyint not null,
-   lesson_time          varchar(3) not null,
+   lesson_time          varchar(10) not null,
    lesson_room          varchar(10) not null,
    primary key (lesson_id)
 );
