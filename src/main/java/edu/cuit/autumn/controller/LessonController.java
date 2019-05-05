@@ -3,7 +3,6 @@ package edu.cuit.autumn.controller;
 import edu.cuit.autumn.entity.Class;
 import edu.cuit.autumn.entity.Lesson;
 import edu.cuit.autumn.entity.Teacher;
-import edu.cuit.autumn.service.LessonService;
 import edu.cuit.autumn.service.impl.ClassServiceImpl;
 import edu.cuit.autumn.service.impl.LessonServiceImpl;
 import edu.cuit.autumn.service.impl.SubjectServiceImpl;

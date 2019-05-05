@@ -162,7 +162,7 @@ create table user
    user_id              varchar(10) not null,
    user_identity        smallint not null,
    user_name            varchar(15) not null,
-   user_password        varchar(15) not null,
+   user_password        varchar(32) not null,
    primary key (user_id)
 );
 
