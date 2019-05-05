@@ -1,2 +1,2 @@
 # Autumn
-This project designed by cuit student.
+It's an autumn season.
