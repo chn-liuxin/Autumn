@@ -33,9 +33,12 @@ public class LessonController {
         List<Lesson> lessons = lessonService.getLessonByTeacher(teachers.get(0));
         Class aClass = classService.getClassById(lessons.get(0).getClassId());
         model.addAttribute("lessons", lessons);
-        model.addAttribute("subjectName", subjectService.getSubjectById(lessons.get(0).getSubjectId()).getSubjectName());
-        model.addAttribute("teacherName", teacherService.getTeacherById(lessons.get(0).getTeacherId()).getTeacherName());
-        model.addAttribute("classInfo", aClass.getClassSession() + "级" + aClass.getClassMajor() + aClass.getClassNumber() + "班");
+        model.addAttribute("subjectName", subjectService.getSubjectById
+                (lessons.get(0).getSubjectId()).getSubjectName());
+        model.addAttribute("teacherName", teacherService.getTeacherById
+                (lessons.get(0).getTeacherId()).getTeacherName());
+        model.addAttribute("classInfo", aClass.getClassSession()
+                + "级" + aClass.getClassMajor() + aClass.getClassNumber() + "班");
         return "/common/showTimeTable";
     }
 

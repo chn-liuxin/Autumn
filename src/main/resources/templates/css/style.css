@@ -1,0 +1,131 @@
+.nav-sidebar {
+
+    margin-right: -21px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+	padding-right:20px;
+	background-color:#f5f5f5;
+
+}
+
+
+.text-muted {
+
+    color: #777;
+	position: fixed;
+    z-index: 1000;
+    display: block;
+
+}
+
+
+.nav > li > .glyphicon{
+	font-size:18px;
+	padding-left:30px;
+	padding-top:5px;
+}
+.nav-sidebar > li > a {
+
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+
+}
+.nav-sidebar > li > a:hover{
+	background-color:#428bca;
+	color:#fff;
+}
+.nav-sidebar > li:hover{
+	background-color:#428bca;
+	color:#fff;
+}
+.nav-sidebar > li > a:focus{
+	background-color:#121212;
+	color:#fff;
+}
+
+.sidebar {
+
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color:#f5f5f5;
+    border-right: 1px solid #eee;
+
+}
+.page-header {
+
+    padding-bottom: 9px;
+	padding-top:20px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #eee;
+
+}
+
+
+
+.col-md-10 {
+
+    width: 83.33333333%;
+
+}
+.col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {
+
+    float: left;
+
+}
+
+
+
+
+.placeholders {
+
+    margin-bottom: 30px;
+    text-align: center;
+
+}
+.row {
+
+    margin-right: -15px;
+    margin-left: -15px;
+
+}
+.main {
+
+    padding-right: 40px;
+    padding-left: 40px;
+
+}
+
+.col-md-offset-2 {
+
+    margin-left: 16.66666667%;
+
+}
+
+
+.form-signin {
+
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+	padding-bottom:150px;
+	padding-top:150px;
+}
+
+
+.login_bg_img {
+	
+
+	background-image: url(../img/background.jpg) ;
+	background-position:center center;
+	background-repeat:no repeat;
+	background-size:cover;
+	background-attachment:fixed;
+}
