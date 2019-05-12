@@ -19,23 +19,22 @@ public class UserController {
 
     @RequestMapping("/index")
     public String login(Model model) {
-        return "/common/login";
+        return "/page/login";
     }
 
     @RequestMapping("/register")
     public String register() {
-        return "/common/register";
+        return "/page/register";
     }
 
-    @RequestMapping("/registerCheck")
+    @RequestMapping("/register-check")
     public String register(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         short identity = -1;
-        try{
+        try {
             identity = Short.parseShort(request.getParameter("userIdentity").trim());
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         User user = new User();
@@ -45,23 +44,24 @@ public class UserController {
         user.setUserIdentity(identity);
         if (userService.getUserByName(username) == null) {
             userService.insertUser(user);
-            return "/common/login";
+            return "/page/login";
         }
-        return "/common/register";
+        return "/page/register";
     }
 
-    @RequestMapping("/loginCheck")
+    @RequestMapping("/login-check")
     public String loginCheck(Model model, HttpServletRequest request) {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String username = request.getParameter("userName");
+        String password = request.getParameter("userPassword");
         User user = userService.getUserByName(username);
         if (user != null) {
             System.out.println(user.toString());
             if (user.getUserPassword().equals(password)) {
-                return "/common/index";
+                return "/page/index";
             }
         }
-        return "/common/login";
+        model.addAttribute("message", "false");
+        return "/page/login";
     }
 
     @RequestMapping("/userList")
@@ -69,6 +69,54 @@ public class UserController {
         List<User> users = userService.getAllUser();
         model.addAttribute("users", users);
         return "user/userList";
+    }
+
+    //    我的信息
+    @RequestMapping("/MyInformation")
+    public String myIfformation(Model model) {
+        return "page/my-information";
+    }
+
+    //    听课记录
+    @RequestMapping("/SupervisionRecord")
+    public String supervisionRecord(Model model) {
+        return "page/supervision-record";
+    }
+
+    //    信息管理
+    @RequestMapping("/ManageInformation")
+    public String manageInformation(Model model) {
+        return "page/manage-information";
+    }
+
+    //    申请听课
+    @RequestMapping("/ApplySupervision")
+    public String applySupervision(Model model) {
+        return "page/apply-supervision";
+    }
+
+    //    安排听课
+    @RequestMapping("/ManageSupervision")
+    public String manageSupervision(Model model) {
+        return "page/manage-supervision";
+    }
+
+    //    用户管理
+    @RequestMapping("/ManageUser")
+    public String manageUser(Model model) {
+        return "page/manage-user";
+    }
+
+    //    录入评价表
+    @RequestMapping("/EntryReview")
+    public String entryReview(Model model) {
+        return "page/entry-review";
+    }
+
+    //    历史记录
+    @RequestMapping("/History")
+    public String history(Model model) {
+        return "page/history";
     }
 
 }
