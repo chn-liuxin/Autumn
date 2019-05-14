@@ -5,16 +5,34 @@
     <title>Title</title>
     <script type="text/javascript">
         function test() {
-            document.getElementById('iiiii').src="home.html"
+            document.getElementById('iframe').src = "home.html"
         }
+
         function test1() {
-            document.getElementById('iiiii').src="index.html"
+            document.getElementById('iframe').src = "index.html"
         }
     </script>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+
+        div {
+            height: 100%;
+        }
+
+        iframe {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-<iframe id="iiiii" src="home.html"></iframe>
-<button onclick="test1()"> 11231</button>
-<button onclick="test()">456456</button>
+<div>
+    <iframe src="home.html" width="100%" height="10%" frameborder="0"></iframe>
+    <div style="height: 85%">
+        <iframe src="home.html" width="20%" height="100%" style="float: left" frameborder="0"></iframe>
+        <iframe id="iframe" width="79%" height="100%" src="home.html" style="float: right" frameborder="0"/>
+    </div>
+</div>
 </body>
 </html>

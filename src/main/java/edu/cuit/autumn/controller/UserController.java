@@ -74,49 +74,62 @@ public class UserController {
     //    我的信息
     @RequestMapping("/MyInformation")
     public String myIfformation(Model model) {
-        return "page/my-information";
+        return "/page/my-information";
     }
 
     //    听课记录
     @RequestMapping("/SupervisionRecord")
     public String supervisionRecord(Model model) {
-        return "page/supervision-record";
+        return "/page/supervision-record";
     }
 
     //    信息管理
     @RequestMapping("/ManageInformation")
     public String manageInformation(Model model) {
-        return "page/manage-information";
+        return "/page/manage-information";
     }
 
     //    申请听课
     @RequestMapping("/ApplySupervision")
     public String applySupervision(Model model) {
-        return "page/apply-supervision";
+        return "/page/apply-supervision";
     }
 
     //    安排听课
     @RequestMapping("/ManageSupervision")
     public String manageSupervision(Model model) {
-        return "page/manage-supervision";
+        return "/page/manage-supervision";
     }
 
     //    用户管理
     @RequestMapping("/ManageUser")
     public String manageUser(Model model) {
-        return "page/manage-user";
+        return "/page/manage-user";
     }
 
     //    录入评价表
     @RequestMapping("/EntryReview")
     public String entryReview(Model model) {
-        return "page/entry-review";
+        return "/page/entry-review";
     }
 
     //    历史记录
     @RequestMapping("/History")
     public String history(Model model) {
-        return "page/history";
+        return "/page/history";
     }
+    @RequestMapping("/Head")
+    public String head(Model model) {
+        return "/page/head";
+    }
+    @RequestMapping("/Menu")
+    public String menu(Model model) {
+        return "/page/menu";
+    }
+    @RequestMapping("/Main")
+    public String main(Model model) {
+        return "/page/my-information";
+    }
+
 
 }
