@@ -1,5 +1,6 @@
 package edu.cuit.autumn.service;
 
+import edu.cuit.autumn.entity.Teacher;
 import edu.cuit.autumn.entity.User;
 
 import java.util.List;
@@ -26,5 +27,7 @@ public interface UserService {
 
     // 新增用户
     void insertUser(User user);
+
+    Teacher getTeacherByUserId(User user);
 
 }

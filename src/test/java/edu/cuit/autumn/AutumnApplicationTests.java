@@ -4,6 +4,7 @@ import edu.cuit.autumn.entity.Teacher;
 import edu.cuit.autumn.entity.User;
 import edu.cuit.autumn.mapper.TeacherMapper;
 import edu.cuit.autumn.service.UserService;
+import edu.cuit.autumn.service.impl.TeacherServiceImpl;
 import edu.cuit.autumn.service.impl.UserServiceImpl;
 import edu.cuit.autumn.util.AutoID;
 import org.junit.Test;
@@ -33,8 +34,13 @@ public class AutumnApplicationTests {
     }
 
     @Test
-    public void getTeacherByNameTest() {
-
+    public void getTeacherByUserIdTest() {
+        User user=new User();
+        user.setUserId("5");
+        user.setUserName("root");
+        UserServiceImpl userService =new UserServiceImpl();
+        User user1=userService.getUserByName(user.getUserName());
+        System.out.println(user1.toString());
     }
 
 }

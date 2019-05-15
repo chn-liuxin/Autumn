@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <script type="text/javascript">
+        function ff() {
+            // document.getElementById("iframe").src="home.html"
+            window.parent._getTempElement("iframe").src="index.html"
+        }
+    </script>
+</head>
+<body>
+    <button onclick="parent.test1()">456</button>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package edu.cuit.autumn.service.impl;
 
+import edu.cuit.autumn.entity.Teacher;
 import edu.cuit.autumn.entity.User;
 import edu.cuit.autumn.mapper.UserMapper;
 import edu.cuit.autumn.service.UserService;
@@ -54,5 +55,7 @@ public class UserServiceImpl implements UserService {
     public void insertUser(User user) {
         userMapper.insertUser(user);
     }
+
+    public Teacher getTeacherByUserId(User user) {return userMapper.getTeacherByUserId(user);}
 
 }

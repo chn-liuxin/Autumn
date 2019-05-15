@@ -63,6 +63,10 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public  Teacher getTeacherByUserId(String userId){
+        return teacherMapper.getTeacherByUserId(userId);
+    }
+    @Override
     public Teacher getTeacherById(String teacherId) {
         return teacherMapper.getTeacherById(teacherId);
     }
