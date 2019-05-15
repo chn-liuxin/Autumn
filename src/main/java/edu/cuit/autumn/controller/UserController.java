@@ -1,14 +1,19 @@
 package edu.cuit.autumn.controller;
 
+import edu.cuit.autumn.entity.Teacher;
 import edu.cuit.autumn.entity.User;
+import edu.cuit.autumn.service.impl.TeacherServiceImpl;
 import edu.cuit.autumn.service.impl.UserServiceImpl;
 import edu.cuit.autumn.util.AutoID;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -57,6 +62,7 @@ public class UserController {
         if (user != null) {
             System.out.println(user.toString());
             if (user.getUserPassword().equals(password)) {
+                model.addAttribute("userName",username);
                 return "/page/index";
             }
         }
@@ -73,8 +79,17 @@ public class UserController {
 
     //    我的信息
     @RequestMapping("/MyInformation")
-    public String myIfformation(Model model) {
-        return "/page/my-information";
+    public String myIfformation(Model model, HttpServletRequest request) {
+        String flag=request.getParameter("userName");
+        if (flag!=null){
+            User user=userService.getUserByName(flag);
+            model.addAttribute(user);
+            Teacher teacher=userService.getTeacherByUserId(user);
+            model.addAttribute(teacher);
+            return "/page/my-information";
+        }
+        model.addAttribute("message","请登录后进行操作");
+        return "/page/login";
     }
 
     //    听课记录
@@ -127,8 +142,20 @@ public class UserController {
         return "/page/menu";
     }
     @RequestMapping("/Main")
-    public String main(Model model) {
+    public String main(Model model,HttpServletRequest request) {
+        if (request.getParameter("userName")!=null){
+            System.out.println("123");
+            model.addAttribute("userName",request.getParameter("userName"));
+            return "/page/my-information";
+        }
         return "/page/my-information";
+    }
+    @RequestMapping("/teacher1")
+    public String teacher1(Model model) {
+        User user=userService.getUserByName("root");
+        System.out.println(user.getUserName());
+        return "/page/index";
+
     }
 
 

@@ -28,7 +28,7 @@ public interface TeacherMapper {
     @Select("select * from teacher where teacher_name=#{teacherName}")
     List<Teacher> getTeacherByName(String teacherName);
 
-    @Select("select * from teacher where teacher_id=#{teacherId}")
+    @Select("select teacher_id as teacherId from teacher where teacher_id= #{teacherId}")
     Teacher getTeacherById(String teacherId);
 
     /**
@@ -50,5 +50,12 @@ public interface TeacherMapper {
      */
     @Update("update teacher set teacher_name=#{teacherName},teacher_sex=#{teacherSex},teacher_brithday=#{teacherBirthday},teacher_position=#{teacherPosition},teacher_phone=#{teacherPhone} where teacher_id=#{teacherId}")
     void updateTeacher(Teacher teacher);
+
+    /**
+     * 修改老师信息
+     * @param userId
+     */
+    @Select("select * from teacher where user_id =5")
+    Teacher getTeacherByUserId(String userId);
 
 }

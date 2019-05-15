@@ -21,6 +21,10 @@ public interface TeacherService {
     // 修改老师信息
     void updateTeacher(Teacher teacher);
 
+    //根据userId查找老师
+    Teacher getTeacherByUserId(String userId);
+
+    //根据老师id查询
     Teacher getTeacherById(String teacherId);
 
 }

@@ -1,5 +1,6 @@
 package edu.cuit.autumn.mapper;
 
+import edu.cuit.autumn.entity.Teacher;
 import edu.cuit.autumn.entity.User;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -61,5 +62,8 @@ public interface UserMapper {
      */
     @Insert("insert into user(user_id,user_identity,user_name,user_password) values(#{userId},#{userIdentity},#{userName},#{userPassword})")
     void insertUser(User user);
+
+    @Select("select * from teacher where user_id=#{userId}")
+    Teacher getTeacherByUserId(User user);
 
 }
