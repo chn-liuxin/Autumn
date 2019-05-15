@@ -19,7 +19,7 @@ public class UserController {
 
     @RequestMapping("/index")
     public String login(Model model) {
-        return "/common/login";
+        return "/login";
     }
 
     @RequestMapping("/register")
@@ -27,13 +27,13 @@ public class UserController {
         return "/common/register";
     }
 
-    @RequestMapping("/registerCheck")
+    @RequestMapping("/")
     public String register(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         short identity = -1;
         try{
-            identity = Short.parseShort(request.getParameter("userIdentity").trim());
+            //identity = Short.parseShort(request.getParameter("userIdentity").trim());
         }
         catch (NumberFormatException e) {
             e.printStackTrace();
@@ -45,12 +45,12 @@ public class UserController {
         user.setUserIdentity(identity);
         if (userService.getUserByName(username) == null) {
             userService.insertUser(user);
-            return "/common/login";
+            return "/index";
         }
-        return "/common/register";
+        return "/login";
     }
 
-    @RequestMapping("/loginCheck")
+    @RequestMapping("/login-check")
     public String loginCheck(Model model, HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -58,10 +58,10 @@ public class UserController {
         if (user != null) {
             System.out.println(user.toString());
             if (user.getUserPassword().equals(password)) {
-                return "/common/index";
+                return "/index";
             }
         }
-        return "/common/login";
+        return "/login";
     }
 
     @RequestMapping("/userList")
