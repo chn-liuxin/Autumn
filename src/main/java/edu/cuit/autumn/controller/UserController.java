@@ -24,11 +24,7 @@ public class UserController {
 
     @RequestMapping("/index")
     public String login(Model model) {
-<<<<<<< HEAD
         return "/login";
-=======
-        return "/page/login";
->>>>>>> 3f393e4eae759c3c4fcf7ab1ff0a646742706aea
     }
 
     @RequestMapping("/register")
@@ -36,25 +32,14 @@ public class UserController {
         return "/page/register";
     }
 
-<<<<<<< HEAD
-    @RequestMapping("/")
-=======
     @RequestMapping("/register-check")
->>>>>>> 3f393e4eae759c3c4fcf7ab1ff0a646742706aea
     public String register(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         short identity = -1;
-<<<<<<< HEAD
-        try{
-            //identity = Short.parseShort(request.getParameter("userIdentity").trim());
-        }
-        catch (NumberFormatException e) {
-=======
         try {
             identity = Short.parseShort(request.getParameter("userIdentity").trim());
         } catch (NumberFormatException e) {
->>>>>>> 3f393e4eae759c3c4fcf7ab1ff0a646742706aea
             e.printStackTrace();
         }
         User user = new User();
@@ -64,15 +49,9 @@ public class UserController {
         user.setUserIdentity(identity);
         if (userService.getUserByName(username) == null) {
             userService.insertUser(user);
-<<<<<<< HEAD
-            return "/index";
-        }
-        return "/login";
-=======
             return "/page/login";
         }
         return "/page/register";
->>>>>>> 3f393e4eae759c3c4fcf7ab1ff0a646742706aea
     }
 
     @RequestMapping("/login-check")
@@ -83,19 +62,12 @@ public class UserController {
         if (user != null) {
             System.out.println(user.toString());
             if (user.getUserPassword().equals(password)) {
-<<<<<<< HEAD
-                return "/index";
-            }
-        }
-        return "/login";
-=======
                 model.addAttribute("userName",username);
                 return "/page/index";
             }
         }
         model.addAttribute("message", "false");
         return "/page/login";
->>>>>>> 3f393e4eae759c3c4fcf7ab1ff0a646742706aea
     }
 
     @RequestMapping("/userList")
