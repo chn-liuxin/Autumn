@@ -1,13 +1,11 @@
 package edu.cuit.autumn.mapper;
 
 import edu.cuit.autumn.entity.Teacher;
+import edu.cuit.autumn.entity.User;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -53,9 +51,9 @@ public interface TeacherMapper {
 
     /**
      * 修改老师信息
-     * @param userId
+     * @param user
      */
-    @Select("select * from teacher where user_id =5")
-    Teacher getTeacherByUserId(String userId);
+    @Select("select * from teacher where user_id=#{userId}")
+    Teacher getTeacherByUserId(User user);
 
 }

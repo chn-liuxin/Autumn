@@ -1,12 +1,15 @@
 package edu.cuit.autumn.controller;
 
+import edu.cuit.autumn.entity.ReviewExp;
 import edu.cuit.autumn.entity.Teacher;
 import edu.cuit.autumn.entity.User;
+import edu.cuit.autumn.service.impl.ReviewExpServiceImpl;
 import edu.cuit.autumn.service.impl.TeacherServiceImpl;
 import edu.cuit.autumn.service.impl.UserServiceImpl;
 import edu.cuit.autumn.util.AutoID;
 import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +24,7 @@ public class UserController {
 
     @Autowired
     UserServiceImpl userService;
+    User user;
 
     @RequestMapping("/index")
     public String login(Model model) {
@@ -42,7 +46,7 @@ public class UserController {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        User user = new User();
+        user= new User();
         user.setUserId(AutoID.getAutoID());
         user.setUserName(username);
         user.setUserPassword(password);
@@ -58,11 +62,11 @@ public class UserController {
     public String loginCheck(Model model, HttpServletRequest request) {
         String username = request.getParameter("userName");
         String password = request.getParameter("userPassword");
-        User user = userService.getUserByName(username);
+        user = userService.getUserByName(username);
         if (user != null) {
             System.out.println(user.toString());
             if (user.getUserPassword().equals(password)) {
-                model.addAttribute("userName",username);
+                model.addAttribute(user);
                 return "/page/index";
             }
         }
@@ -80,9 +84,9 @@ public class UserController {
     //    我的信息
     @RequestMapping("/MyInformation")
     public String myIfformation(Model model, HttpServletRequest request) {
-        String flag=request.getParameter("userName");
-        if (flag!=null){
-            User user=userService.getUserByName(flag);
+        String userName=request.getParameter("userName");
+        if (userName!=null){
+            user=userService.getUserByName(userName);
             model.addAttribute(user);
             Teacher teacher=userService.getTeacherByUserId(user);
             model.addAttribute(teacher);
@@ -94,7 +98,14 @@ public class UserController {
 
     //    听课记录
     @RequestMapping("/SupervisionRecord")
-    public String supervisionRecord(Model model) {
+    public String supervisionRecord(Model model,HttpServletRequest request) {
+        user=new User();
+        user.setUserName(request.getParameter("userName"));
+        user.setUserId(request.getParameter("userId"));
+        Teacher teacher=userService.getTeacherByUserId(user);
+        ReviewExpServiceImpl reviewExpService=new ReviewExpServiceImpl();
+        List<ReviewExp> list=reviewExpService.getReviewExpByReviewTeacherId(teacher.getTeacherId());
+        model.addAttribute("reviewExps",list);
         return "/page/supervision-record";
     }
 
@@ -113,6 +124,7 @@ public class UserController {
     //    安排听课
     @RequestMapping("/ManageSupervision")
     public String manageSupervision(Model model) {
+
         return "/page/manage-supervision";
     }
 
@@ -154,9 +166,12 @@ public class UserController {
     public String teacher1(Model model) {
         User user=userService.getUserByName("root");
         System.out.println(user.getUserName());
-        return "/page/index";
+        TeacherServiceImpl teacherService=new TeacherServiceImpl();
+        Teacher teacher1=userService.getTeacherByUserId(user);
+        System.out.println(teacher1.getTeacherName());
+        Teacher teacher=teacherService.getTeacherByUserId(user);
+        System.out.println(teacher.getTeacherName());
+        return "/page/login";
 
     }
-
-
 }
