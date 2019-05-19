@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>主页-MENU</title>
+  <!-- 引入Layui的CSS文件和JS文件 -->
+  <link rel="stylesheet" href="css/layui.css">
+  <script src="js/layui.js"></script>
+  <!-- 引入Bootstrap的CSS文件和JS文件 -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="js/bootstrap.min.js"></script>
+  <style type="text/css">
+      html,body{
+	      height:100%
+	  }
+  </style>
+</head>
+<body>
+    <div class="bg-info" style="width:100%;height:100%">
+        <!-- sidebar menu start-->
+        <ul class="nav nav-pills nav-stacked text-center">
+            <p class="centered"><img src="images/head.jpg" class="img-circle" width="80"></p>
+            <h5 class="centered" th:text="${userName}">User Name</h5>
+            <li class="mt" style="margin-top: 0px">
+                <a onclick="parent.my_inf()">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <span>我的信息</span>
+                </a>
+            </li>
+            <li class="mt" style="margin-top: 0px">
+                <a onclick="parent.sup_rec()">
+                    <i class="glyphicon glyphicon-list-alt"></i>
+                    <span>听课记录</span>
+                </a>
+            </li>
+            <li class="mt" style="margin-top: 0px">
+                <a onclick="parent.mag_inf()">
+                    <i class="glyphicon glyphicon-cog"></i>
+                    <span>信息管理</span>
+                </a>
+            </li>
+            <li class="mt" style="margin-top: 0px">
+                <a onclick="parent.app_rev()">
+                    <i class="glyphicon glyphicon-star"></i>
+                    <span>申请听课</span>
+                </a>
+            </li>
+            <li class="mt" style="margin-top: 0px">
+                <a onclick="parent.mag_sup()">
+                    <i class="glyphicon glyphicon-star"></i>
+                    <span>安排听课</span>
+                </a>
+            </li>
+            <li class="mt" style="margin-top: 0px">
+                <a onclick="parent.mag_user()">
+                    <i class="glyphicon glyphicon-star"></i>
+                    <span>用户管理</span>
+                </a>
+            </li>
+            <li class="mt" style="margin-top: 0px">
+                <a onclick="parent.ent_rev()">
+                    <i class="glyphicon glyphicon-star"></i>
+                    <span>录入评价</span>
+                </a>
+            </li>
+            <li class="mt" style="margin-top: 0px">
+                <a onclick="parent.history()">
+                    <i class="glyphicon glyphicon-star"></i>
+                    <span>历史记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="google_maps.html">
+                    <i class="fa fa-map-marker"></i>
+                    <span>Google Maps </span>
+                </a>
+            </li>
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</body>
+</html>
