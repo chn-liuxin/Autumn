@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class MainController {
 
@@ -21,7 +23,9 @@ public class MainController {
      * @return
      */
     @RequestMapping("/Menu")
-    public String menu() {
+    public String menu(Model model, HttpServletRequest request) {
+        String userName = request.getParameter("userName");
+        model.addAttribute("userName", userName);
         return "/page/index-menu";
     }
 
