@@ -39,9 +39,9 @@
         document.getElementById('mainIframe').src="/autumn/ManageUser";
     }
     function my_inf() {
-        // var url="/autumn/MyInformation?userName="+[[${userName}]];
-        // document.getElementById('mainIframe').src=url;
-        document.getElementById('mainIframe').src="/autumn/MyInformation?userName=liuxin";
+        var url="/autumn/MyInformation?userName="+[[${user.userName}]];
+        document.getElementById('mainIframe').src=url;
+        // document.getElementById('mainIframe').src="/autumn/MyInformation?userName=root";
     }
     function sup_rec() {
         document.getElementById('mainIframe').src="/autumn/SupervisionRecord";
