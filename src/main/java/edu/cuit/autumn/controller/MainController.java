@@ -24,8 +24,9 @@ public class MainController {
      */
     @RequestMapping("/Menu")
     public String menu(Model model, HttpServletRequest request) {
-        String userName = request.getParameter("userName");
-        model.addAttribute("userName", userName);
+        String userIdentity = request.getParameter("userIdentity");
+        model.addAttribute("userIdentity", userIdentity);
+        System.out.println(userIdentity);
         return "/page/index-menu";
     }
 

@@ -32,64 +32,57 @@
       }
   </style>
     <script th:inlne="javascript">
-        var userName;
-        parent.document.getElementById("")
     </script>
 </head>
 <body>
     <div style="width:100%;height:100%;background: #455058;">
         <!-- sidebar menu start-->
         <ul class="nav nav-pills nav-stacked text-center">
-<<<<<<< HEAD
-            <p class="centered"><img src="images/head.jpg" class="img-circle" width="80"></p>
-            <h5  id="userName" class="centered" th:text="${userName}">User Name</h5>
-=======
             <p class="centered"><img src="images/head.jpg" class="img-circle head-portrit"></p>
             <h5 class="centered" th:text="${userName}">User Name</h5>
->>>>>>> 9dbbe5d9b1035aeefbfaeaa1861fde6a3cfe7864
-            <li class="mt" style="margin-top: 0px">
+            <li id="my_inf" class="mt" style="margin-top: 0px">
                 <a onclick="parent.my_inf()">
                     <img src="images/icon1.png" class="img-responsive">
                     <span>我的信息</span>
                 </a>
             </li>
-            <li class="mt" style="margin-top: 0px">
+            <li  th:if="${userIdentity} ne 0" id="sup_rec" class="mt" style="margin-top: 0px" >
                 <a onclick="parent.sup_rec()">
                     <img src="images/icon2.png" class="img-responsive">
                     <span>听课记录</span>
                 </a>
             </li>
-            <li class="mt" style="margin-top: 0px">
+            <li id="mag_inf" class="mt" style="margin-top: 0px">
                 <a onclick="parent.mag_inf()">
                     <img src="images/head.jpg" class="img-responsive">
                     <span>信息管理</span>
                 </a>
             </li>
-            <li class="mt" style="margin-top: 0px">
+            <li id="app_rev" class="mt" style="margin-top: 0px" th:if="${userIdentity} ne 0" >
                 <a onclick="parent.app_rev()">
                     <img src="images/head.jpg" class="img-responsive">
                     <span>申请听课</span>
                 </a>
             </li>
-            <li class="mt" style="margin-top: 0px">
-                <a onclick="parent.mag_sup()">
+            <li id="mag_sup" class="mt" style="margin-top: 0px"  th:if="${userIdentity} ne 0" >
+                <a onclick="parent.mag_sup()" th:if="${userIdentity} ne 3">
                     <img src="images/head.jpg" class="img-responsive">
                     <span>安排听课</span>
                 </a>
             </li>
-            <li class="mt" style="margin-top: 0px">
+            <li id="man_user" class="mt" style="margin-top: 0px" th:if="${userIdentity} eq 0">
                 <a onclick="parent.mag_user()">
                     <img src="images/head.jpg" class="img-responsive">
                     <span>用户管理</span>
                 </a>
             </li>
-            <li class="mt" style="margin-top: 0px">
+            <li id="ent_rev" class="mt" style="margin-top: 0px" th:if="${userIdentity} eq 1">
                 <a onclick="parent.ent_rev()">
                     <img src="images/head.jpg" class="img-responsive">
                     <span>录入评价</span>
                 </a>
             </li>
-            <li class="mt" style="margin-top: 0px">
+            <li id="his" class="mt" style="margin-top: 0px" th:if="${userIdentity} ne 0">
                 <a onclick="parent.history()">
                     <img src="images/head.jpg" class="img-responsive">
                     <span>历史记录</span>
@@ -101,15 +94,12 @@
                     <!--<span>Google Maps </span>-->
                 <!--</a>-->
             <!--</li>-->
-<<<<<<< HEAD
             <li>
                 <a href="google_maps.html">
                     <i class="fa fa-map-marker"></i>
                     <span>Google Maps </span>
                 </a>
             </li>
-=======
->>>>>>> 9dbbe5d9b1035aeefbfaeaa1861fde6a3cfe7864
         </ul>
         <!-- sidebar menu end-->
     </div>
