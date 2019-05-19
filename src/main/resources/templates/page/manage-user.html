@@ -16,12 +16,12 @@
 <body>
 	<div class="container"  align="center" >
 		<h1 class="page-header" align="center">用户管理</h1>
-		<form action="">
+		<form action="/autumn/ManageUser" method="post">
 		<table class="table table-striped">
         <tr>
             <td>教师名字:</td>
             <td>
-			<select class="form-control">
+			<select class="form-control" name="teacherName">
 				<option value="1" selected disabled>-非必填-</option>
 				<option value="2">郑丰华</option>
 				<option value="3">3</option>
@@ -31,12 +31,12 @@
 			</td>
 			<td>教师ID:</td>
             <td>
-			<select class="form-control">
+			<select class="form-control" name="teacherId">
 				<option value="1" selected disabled>-非必填-</option>
 				<option value="2">郑丰华</option>
 				<option value="3">3</option>
 				<option value="4">4</option>
-				<option value="5">5</option>
+				<option value="6666">5</option>
 			</select>
 			</td>
         </tr>
