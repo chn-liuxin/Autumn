@@ -54,7 +54,7 @@ public class UserController {
     public String myInformation(Model model, HttpServletRequest request) {
         String userName=request.getParameter("userName");
         if (userName!=null){
-            System.out.println(userName + "000000000000000000");
+            System.out.println(userName);
             user=userService.getUserByName(userName);
             model.addAttribute(user);
             Teacher teacher=userService.getTeacherByUserId(user);
