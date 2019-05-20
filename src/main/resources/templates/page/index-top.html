@@ -15,6 +15,7 @@
       height: 100%;
       overflow-x: hidden;
       overflow-y: hidden;
+      background: #455058;
     }
     h1,h2,h3,h4,h5{
       color: white;
@@ -27,15 +28,11 @@
   </script>
 </head>
 <body>
-  <div class="container" style="height: 100%;width: 100%;background-color: #000000;border: 0px">
-    <div class="text-left" style="font-family: 华文行楷;font-size: 32px;color: #FFFFFF">教学督导听课评价管理系统</div>
-    <div class="text-right" style="font-family: 黑体;color: #FFFFFF">欢迎您:liuxin  <a href="/index">注销</a></button></div>
-  <div class="container" style="height: 100%;width: 100%;background-color: black;border: 0px">
     <div float="left" width="60%" height="100%">
-      <h1 style="font-family: 华文行楷">教学督导听课评价管理系统</h1>
+      <div style="font-family: 华文行楷">教学督导听课评价管理系统</div>
     </div>
     <div float="right" width="30%" height="100%">
-      <h4 style="font-family: 楷体" class="text-right">欢迎您:UserName<a href="#" onclick="toLogin()">注销</a></h4>
+      <div style="font-family: 楷体" class="text-right" th:text="欢迎您:+${userName}">欢迎您:UserName<a href="" onclick="toLogin()">注销</a></div>
     </div>
   </div>
 </body>
