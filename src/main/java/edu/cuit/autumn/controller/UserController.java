@@ -54,7 +54,7 @@ public class UserController {
     public String myInformation(Model model, HttpServletRequest request) {
         String userName=request.getParameter("userName");
         if (userName!=null){
-            System.out.println(userName);
+            System.out.println(userName + "我的信息");
             user=userService.getUserByName(userName);
             model.addAttribute(user);
             Teacher teacher=userService.getTeacherByUserId(user);
@@ -68,13 +68,13 @@ public class UserController {
     //    听课记录
     @RequestMapping("/SupervisionRecord")
     public String supervisionRecord(Model model,HttpServletRequest request) {
-        user=new User();
-        user.setUserName(request.getParameter("userName"));
-        user.setUserId(request.getParameter("userId"));
-        Teacher teacher=userService.getTeacherByUserId(user);
-        ReviewExpServiceImpl reviewExpService=new ReviewExpServiceImpl();
-        List<ReviewExp> list=reviewExpService.getReviewExpByReviewTeacherId(teacher.getTeacherId());
-        model.addAttribute("reviewExps",list);
+        System.out.println(request.getParameter("userName") + "听课记录");
+        user = userService.getUserByName(request.getParameter("userName"));
+//        Teacher teacher=userService.getTeacherByUserId(user);
+//        ReviewExpServiceImpl reviewExpService=new ReviewExpServiceImpl();
+//        List<ReviewExp> list=reviewExpService.getReviewExpByReviewTeacherId(teacher.getTeacherId());
+//        model.addAttribute("reviewExps",list);
+        model.addAttribute("user", user);
         return "/page/supervision-record";
     }
 
