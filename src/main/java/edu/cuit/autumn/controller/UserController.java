@@ -59,8 +59,8 @@ public class UserController {
             System.out.println(userName + "我的信息");
             user=userService.getUserByName(userName);
             model.addAttribute(user);
-//            Teacher teacher=userService.getTeacherByUserId(user);
-//            model.addAttribute(teacher);
+            Teacher teacher=userService.getTeacherByUserId(user);
+            model.addAttribute(teacher);
             return "/page/my-information";
         }
         model.addAttribute("message","请登录后进行操作");
