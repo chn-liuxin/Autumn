@@ -24,6 +24,8 @@ public class UserController {
 
     @Autowired
     UserServiceImpl userService;
+    @Autowired
+            TeacherServiceImpl teacherService;
     User user;
 
     @RequestMapping("/login-check")
@@ -58,7 +60,7 @@ public class UserController {
             user=userService.getUserByName(userName);
             model.addAttribute(user);
             Teacher teacher=userService.getTeacherByUserId(user);
-            //model.addAttribute(teacher);
+            model.addAttribute(teacher);
             return "/page/my-information";
         }
         model.addAttribute("message","请登录后进行操作");
@@ -99,7 +101,15 @@ public class UserController {
 
     //    用户管理
     @RequestMapping("/ManageUser")
-    public String manageUser(Model model) {
+    public String manageUser(Model model,HttpServletRequest request) {
+        String name=request.getParameter("teacherName");
+        String id=request.getParameter("teacherId");
+        if (name != null || id!=null) {
+            Teacher teacher=teacherService.getTeacherById(id);
+            System.out.println(id);
+            model.addAttribute(teacher);
+            return "/page/manage-user";
+        }
         return "/page/manage-user";
     }
 
