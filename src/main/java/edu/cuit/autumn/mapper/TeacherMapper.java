@@ -56,4 +56,9 @@ public interface TeacherMapper {
     @Select("select * from teacher where user_id=#{userId}")
     Teacher getTeacherByUserId(User user);
 
+    /**
+     * 模糊查询老师
+     */
+    @Select("select * from teacher where teacher_name like teacherName")
+    List<Teacher> getTeacherFuzzy(String teacherName);
 }

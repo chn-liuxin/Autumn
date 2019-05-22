@@ -1,5 +1,10 @@
 package edu.cuit.autumn.controller;
 
+import edu.cuit.autumn.entity.Teacher;
+import edu.cuit.autumn.entity.User;
+import edu.cuit.autumn.service.impl.TeacherServiceImpl;
+import edu.cuit.autumn.service.impl.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class MainController {
+
+    @Autowired
+    UserServiceImpl userService;
+    @Autowired
+    TeacherServiceImpl teacherService;
+    User user;
+    Teacher teacher;
 
     /**
      * 返回主页
@@ -19,13 +31,25 @@ public class MainController {
     }
 
     /**
+     * Home
+     */
+    @RequestMapping("Home")
+    public String home() {
+        return "/page/home";
+    }
+
+    /**
      * 返回主页菜单
      * @return
      */
     @RequestMapping("/Menu")
     public String menu(Model model, HttpServletRequest request) {
         String userName = request.getParameter("userName");
-        model.addAttribute("userName", userName);
+        System.out.println(userName + "\tin menu.");
+        user = userService.getUserByName(userName);
+        teacher = teacherService.getTeacherByUserId(user);
+        model.addAttribute("teacherName", teacher == null ? "管理员" : teacher.getTeacherName());
+        model.addAttribute("userIdentity", user.getUserIdentity());
         return "/page/index-menu";
     }
 

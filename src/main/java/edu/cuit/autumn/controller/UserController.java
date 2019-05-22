@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -25,10 +25,11 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
     @Autowired
-            TeacherServiceImpl teacherService;
+    TeacherServiceImpl teacherService;
     User user;
+    Teacher teacher;
 
-    @RequestMapping("/login-check")
+    @RequestMapping("/home")
     public String loginCheck(Model model, HttpServletRequest request) {
         String username = request.getParameter("userName");
         String password = request.getParameter("userPassword");
@@ -59,8 +60,8 @@ public class UserController {
             System.out.println(userName + "我的信息");
             user=userService.getUserByName(userName);
             model.addAttribute(user);
-            Teacher teacher=userService.getTeacherByUserId(user);
-            model.addAttribute(teacher);
+//            Teacher teacher=userService.getTeacherByUserId(user);
+//            model.addAttribute(teacher);
             return "/page/my-information";
         }
         model.addAttribute("message","请登录后进行操作");
@@ -77,7 +78,7 @@ public class UserController {
 //        List<ReviewExp> list=reviewExpService.getReviewExpByReviewTeacherId(teacher.getTeacherId());
 //        model.addAttribute("reviewExps",list);
         model.addAttribute("user", user);
-        return "/page/supervision-record";
+        return "/page/manage-news";
     }
 
     //    信息管理
@@ -99,20 +100,6 @@ public class UserController {
         return "/page/manage-supervision";
     }
 
-    //    用户管理
-    @RequestMapping("/ManageUser")
-    public String manageUser(Model model,HttpServletRequest request) {
-        String name=request.getParameter("teacherName");
-        String id=request.getParameter("teacherId");
-        if (name != null || id!=null) {
-            Teacher teacher=teacherService.getTeacherById(id);
-            System.out.println(id);
-            model.addAttribute(teacher);
-            return "/page/manage-user";
-        }
-        return "/page/manage-user";
-    }
-
     //    录入评价表
     @RequestMapping("/EntryReview")
     public String entryReview(Model model) {
@@ -125,7 +112,10 @@ public class UserController {
         return "/page/history";
     }
     @RequestMapping("/Top")
-    public String head(Model model) {
+    public String head(Model model, HttpServletRequest request) {
+        String userName = request.getParameter("userName");
+        System.out.println(userName + "in top.");
+        model.addAttribute("userName", userName);
         return "/page/index-top";
     }
 
@@ -139,16 +129,15 @@ public class UserController {
         return "/page/my-information";
     }
 
-    @RequestMapping("/teacher1")
-    public String teacher1(Model model) {
-        User user=userService.getUserByName("root");
-        System.out.println(user.getUserName());
-        TeacherServiceImpl teacherService=new TeacherServiceImpl();
-        Teacher teacher1=userService.getTeacherByUserId(user);
-        System.out.println(teacher1.getTeacherName());
-        Teacher teacher=teacherService.getTeacherByUserId(user);
-        System.out.println(teacher.getTeacherName());
-        return "/page/login";
-
-    }
+//    @RequestMapping("/teacher1")
+//    public String teacher1(Model model) {
+//        User user=userService.getUserByName("root");
+//        System.out.println(user.getUserName());
+//        TeacherServiceImpl teacherService=new TeacherServiceImpl();
+//        Teacher teacher1=userService.getTeacherByUserId(user);
+//        System.out.println(teacher1.getTeacherName());
+//        Teacher teacher=teacherService.getTeacherByUserId(user);
+//        System.out.println(teacher.getTeacherName());
+//        return "/page/login";
+//    }
 }

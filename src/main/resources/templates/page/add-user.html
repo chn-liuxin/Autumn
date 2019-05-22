@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>添加用户</title>
+    <!-- 引入Layui的CSS文件和JS文件 -->
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="css/layui.css" media="all">
+    <script src="layui.js"></script>
+    <!-- 引入Bootstrap的CSS文件和JS文件 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<img src="images/login-bg.jpg" alt="Responsive image" width="100%" height="100%">
+<div id="loginModal" class="modal show">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-center text-primary">添加老师</h2>
+            </div>
+            <div class="modal-body">
+                <form action="/autumn/AddTeacher" method="post" class="form col-md-12 center-block">
+                    <div class="form-group">
+                        <h4>老师姓名:</h4>
+                        <input type="text" name="teacherName" class="form-control" placeholder="例如:张三">
+                    </div>
+                    <div class="form-group">
+                        <h4>老师身份:</h4>
+                        <select class="form-control" name="teacherIdentity">
+                            <option value="3">普通老师</option>
+                            <option value="2">普通督导</option>
+                            <option value="1">一级督导</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <h4>老师性别:</h4>
+                        <select class="form-control" name="teacherSex">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <h4>老师职位:</h4>
+                        <input type="text" name="teacherPosition" class="form-control" placeholder="例如:教授">
+                    </div>
+                    <div class="form-group">
+                        <h4>老师电话:</h4>
+                        <input type="text" name="teacherPhone" class="form-control" placeholder="例如:12345678910">
+                    </div>
+                    <div class="form-group">
+                        <h4>出生日期:</h4>
+                        <input type="text" name="teacherBirthday" class="form-control" placeholder="例如:1973-02-08">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">确认添加</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

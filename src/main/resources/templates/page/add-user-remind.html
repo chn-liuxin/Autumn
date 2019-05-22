@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>提醒!</title>
+    <!-- 引入Layui的CSS文件和JS文件 -->
+    <link rel="stylesheet" href="css/layui.css">
+    <script src="js/layui.js"></script>
+    <!-- 引入Bootstrap的CSS文件和JS文件 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="modal-body text-left">
+        <form action="/autumn/ManageUser" class="form center-block">
+            <h1 class="page-header" align="center" style="color: red">注意通知该老师!</h1>
+            <div class="form-group">
+                <h4>老师姓名:</h4>
+                <b th:text="${teacher.teacherName}" class="form-control">UserName</b>
+            </div>
+            <div class="form-group">
+                <h4>用户名称:</h4>
+                <b th:text="${user.userName}" class="form-control">UserName</b>
+            </div>
+            <div class="form-group">
+                <h4>用户密码:</h4>
+                <b th:text="${user.userPassword}" class="form-control">UserName</b>
+            </div>
+            <div class="form-group text-center">
+                <button class="btn btn-success" type="submit">我已详细阅读并将通知该老师</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

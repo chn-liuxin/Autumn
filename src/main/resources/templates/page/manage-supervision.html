@@ -1,106 +1,170 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>安排听课</title>
-    <!-- 引入Layui的CSS文件和JS文件 -->
-    <link rel="stylesheet" href="css/layui.css">
-    <script src="js/layui.js"></script>
-    <!-- 引入Bootstrap的CSS文件和JS文件 -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/bootstrap.min.js"></script>
-    <style type="text/css">
-        td{
-            text-align: center;
-            valign: "center";
-        }
-    </style>
+  <meta charset="utf-8">
+  <title>安排选课</title>
+  <!-- 引入Layui的CSS文件和JS文件 -->
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="css/layui.css" media="all">
+  <script src="layui.js"></script> 
+  <!-- 引入Bootstrap的CSS文件和JS文件 -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1 class="page-header" align="center">安排听课</h1>
-        <table class="table">
-            <tr>
-                <td>听课老师：</td>
-                <td><input type="text" class="form-control"></td>
-                <td>授课老师：</td>
-                <td><input type="text" class="form-control"></td>
-                <td><button class="btn btn-success">查询</button></td>
-            </tr>
-        </table>
-        <h2 class="page-header" align="center">课程表</h2>
-        <table class="table table-bordered">
-            <tr>
-                <td>时间/星期</td>
-                <td>星期一</td>
-                <td>星期二</td>
-                <td>星期三</td>
-                <td>星期四</td>
-                <td>星期五</td>
-                <td>星期六</td>
-                <td>星期日</td>
-            </tr>
-            <tr>
-                <td>上午一二节</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-            </tr>
-            <tr>
-                <td>上午三四节</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-            </tr>
-            <tr>
-                <td>下午五六节</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-            </tr>
-            <tr>
-                <td>下午七八节</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-            </tr>
-            <tr>
-                <td>晚上九十节</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-            </tr>
-            <tr>
-                <td>晚上十一二节</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-                <td>语文</td>
-            </tr>
-        </table>
-    </div>
+	<div class="container"  align="center" >
+		<h1 class="page-header" align="center">安排选课</h1>
+		<form action="">
+		<table class="table table-striped">
+        <tr>
+            <td>课程名称:</td>
+            <td>
+			<select class="form-control">
+				<option value="1" selected disabled>-非必填-</option>
+				<option value="2">郑丰华</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+			</td>
+			<td>授课老师:</td>
+            <td>
+			<select class="form-control">
+				<option value="1" selected disabled>-非必填-</option>
+				<option value="2">郑丰华</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+			</td>
+        </tr>
+		<tr>
+			<td><button type="submit" class="btn btn-success">查找</button>
+			<button type="reset" class="btn btn-warning">重置</button></td>
+		</tr>
+     </table>
+	 </form>
+	 <h2 align="left" style="color:rgb(78, 205, 196);">听课老师推荐</h2>
+	 <table class="layui-hide" id="test"></table>
+	 <div >
+	 <table id="table" class="table table-bordered" >
+		<tr>
+            <td>课程名称</td>
+            <td>老师</td>
+			<td>听课次数</td>
+			<td>评级</td>
+			<td>安排听课</td>
+			<td>详情</td>
+        </tr>
+		<tr>
+            <td>人工智能</td>
+            <td>张永清</td>
+			<td>5</td>
+			<td>B</td>
+            <td><button data-method="more" type="button" class="btn btn-success">选择课程</button></td>
+			<td><button data-method="more" type="button" class="btn btn-primary">查看详情</button></td>
+        </tr>
+		<tr>
+            <td>人工智能</td>
+            <td>张永清</td>
+			<td>5</td>
+			<td>B</td>
+            <td><button data-method="more" type="button" class="btn btn-success">选择课程</button></td>
+			<td><button data-method="more" type="button" class="btn btn-primary">查看详情</button></td>
+        </tr>
+		<tr>
+            <td>人工智能</td>
+            <td>张永清</td>
+			<td>5</td>
+			<td>B</td>
+            <td><button data-method="more" type="button" class="btn btn-success">选择课程</button></td>
+			<td><button data-method="more" type="button" class="btn btn-primary">查看详情</button></td>
+        </tr>
+		<tr>
+            <td>人工智能</td>
+            <td>张永清</td>
+			<td>5</td>
+			<td>B</td>
+            <td><button data-method="more" type="button" class="btn btn-success">选择课程</button></td>
+			<td><button data-method="more" type="button" class="btn btn-primary">查看详情</button></td>
+        </tr>
+		<tr>
+            <td>人工智能</td>
+            <td>张永清</td>
+			<td>5</td>
+			<td>B</td>
+            <td><button data-method="more" type="button" class="btn btn-success">选择课程</button></td>
+			<td><button data-method="more" type="button" class="btn btn-primary">查看详情</button></td>
+        </tr>
+		<tr>
+            <td>人工智能</td>
+            <td>张永清</td>
+			<td>5</td>
+			<td>B</td>
+            <td><button data-method="more" type="button" class="btn btn-success">选择课程</button></td>
+			<td><button data-method="more" type="button" class="btn btn-primary">查看详情</button></td>
+        </tr>
+		</table>
+	</div>
+	</div>
+<script src="layui.js"></script>
+<script>
+layui.use(['laydate','laypage', 'layer'], function(){
+  var $=layui.jquery
+  ,laydate = layui.laydate
+  ,laypage = layui.laypage
+  ,layer = layui.layer;
+  var active = {
+	more: function(){
+      //查看更多弹窗，内容还没写，不知道怎么传参
+      layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
+        time: 20000, //20s后自动关闭
+        btn: ['明白了', '知道了', '哦']
+      });
+    }
+	,select: function(){
+      //申请选课点击后具体选择弹窗，内容没有改
+      layer.open({
+        type: 1
+        ,title: "选择具体听课时间"//不显示标题栏
+        ,closeBtn: false
+        ,area: '300px;'
+        ,shade: 0.8
+        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+        ,btn: ['确认', '取消']
+        ,btnAlign: 'c'
+        ,moveType: 1 //拖拽模式，0或者1
+        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>layer ≠ layui<br><br>layer只是作为Layui的一个弹层模块，由于其用户基数较大，所以常常会有人以为layui是layerui<br><br>layer虽然已被 Layui 收编为内置的弹层模块，但仍然会作为一个独立组件全力维护、升级。<br><br>我们此后的征途是星辰大海 ^_^</div>'
+        ,success: function(layero){
+          var btn = layero.find('.btn btn-success');
+          btn.find('.btn btn-danger');
+        }
+      });
+    }
+  };
+	$('#table .btn').on('click', function(){
+    var othis = $(this), method = othis.data('method');
+    active[method] ? active[method].call(this, othis) : '';
+  });
+  
+  //日期范围
+  laydate.render({
+    elem: '#start_time'
+	,calendar: true
+	,theme: '#393D49'
+	,btns: ['confirm']
+  });
+  laydate.render({
+    elem: '#end_time'
+	,calendar: true
+	,theme: '#393D49'
+	,btns: ['confirm']
+  });
+  
+   
+});
+</script>
+	<script type="text/javascript" src="js/bootstrap-table.js"></script>
 </body>
 </html>

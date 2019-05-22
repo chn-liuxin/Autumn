@@ -2,13 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="utf-8">
-    <title>主页</title>
+    <title>教学督导听课评价管理系统</title>
     <!-- 引入Layui的CSS文件和JS文件 -->
     <link rel="stylesheet" href="css/layui.css">
     <script src="js/layui.js"></script>
     <!-- 引入Bootstrap的CSS文件和JS文件 -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="jstraps/boot.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <!-- 主页CSS和JS -->
     <style type="text/css">
@@ -21,6 +20,9 @@
         }
     </style>
     <script th:inline="javascript">
+        function home() {
+            document.getElementById('mainIframe').src = "/autumn/Home";
+        }
         function app_rev() {
             document.getElementById('mainIframe').src = "/autumn/ApplySupervision";
         }
@@ -48,24 +50,37 @@
         function my_inf() {
             var url = "/autumn/MyInformation?userName=" + [[${user.userName}]];
             document.getElementById('mainIframe').src = url;
+            // document.getElementById('mainIframe').src="/autumn/MyInformation?userName=root";
         }
 
         function sup_rec() {
-            var url = "/autumn/SupervisionRecord?userName=" + [[${user.userName}]];
-            document.getElementById('mainIframe').src = url;
+            var url="/autumn/SupervisionRecord?userName="+[[${user.userName}]];
+            document.getElementById('mainIframe').src=url;
+        }
+        function menu() {
+            var url="/autumn/Menu?userName="+[[${user.userName}]];
+            document.getElementById('menu').src=url;
+        }
+        function index_top() {
+            var url="/autumn/Top?userName="+[[${user.userName}]];
+            document.getElementById('top').src=url;
+        }
+        function init() {
+            index_top();
+            menu();
+            home();
         }
     </script>
 </head>
-<body>
-    <div id="container" style="width: 100%;height: 100%;">
-        <div style="margin-bottom: 0;width: 100%;height: 8%;border:0;padding:0;">
-            <iframe src="/autumn/Top" width="100%" height="100%" frameborder="0"></iframe>
-        </div>
-        <div style="height: 92%;margin:0;border:0;padding:0;width:100%">
-            <iframe class="text-center" src="/autumn/Menu" width="10%" height="100%" style="float: left" frameborder="0"
-                onload="my_inf()"></iframe>
-            <iframe id="mainIframe" width="90%" height="100%" style="float: right" frameborder="0"/>
-        </div>
+<body onload="init()">
+<div id="container" style="width: 100%;height: 100%;">
+    <div style="margin-bottom: 0;width: 100%;height: 7%;border:0;padding:0;">
+        <iframe id="top" width="100%" height="100%" frameborder="0"></iframe>
     </div>
+    <div style="height: 93%;margin:0;border:0;padding:0;width:100%">
+        <iframe id="menu" class="text-center" width="7%" height="100%" style="float: left" frameborder="0"></iframe>
+        <iframe id="mainIframe" width="93%" height="100%" style="float: right" frameborder="0" />
+    </div>
+</div>
 </body>
 </html>

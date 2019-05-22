@@ -16,7 +16,7 @@ public interface TeacherService {
     void deleteTeacher(String teacherId);
 
     // 增加老师
-    void insertTeacher(Teacher teacher);
+    void insertTeacher(Teacher teacher, User user);
 
     // 修改老师信息
     void updateTeacher(Teacher teacher);
