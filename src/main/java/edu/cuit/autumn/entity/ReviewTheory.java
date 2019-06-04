@@ -13,7 +13,7 @@ public class ReviewTheory {
 
     private String subjectId;
 
-    private String lessonId;
+    private String classroom;
 
     private String theme;
 
@@ -101,12 +101,12 @@ public class ReviewTheory {
         this.subjectId = subjectId == null ? null : subjectId.trim();
     }
 
-    public String getLessonId() {
-        return lessonId;
+    public String getClassroom() {
+        return classroom;
     }
 
-    public void setLessonId(String lessonId) {
-        this.lessonId = lessonId == null ? null : lessonId.trim();
+    public void setClassroom(String classroom) {
+        this.classroom = classroom == null ? null : classroom.trim();
     }
 
     public String getTheme() {

@@ -41,4 +41,17 @@ public class LessonServiceImpl implements LessonService {
         lessonMapper.updateLesson(lesson);
     }
 
+    @Override
+    public List<Lesson> getAllLesson() {
+        return lessonMapper.getAllLesson();
+    }
+
+    @Override
+    public List<Lesson> getLessonByIndex(int startIndex, int endIndex) {
+        return lessonMapper.getLessonByIndex(startIndex, endIndex);
+    }
+
+    public Lesson getLessonByLessonId(String lessonId) {
+        return lessonMapper.getLessonByLessonId(lessonId);
+    }
 }

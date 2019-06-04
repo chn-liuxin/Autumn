@@ -1,172 +1,338 @@
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8">
-  <title>申请听课</title>
-  <!-- 引入Layui的CSS文件和JS文件 -->
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="css/layui.css" media="all">
-  <script src="js/layui.js"></script> 
-  <!-- 引入Bootstrap的CSS文件和JS文件 -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <script src="js/bootstrap.min.js"></script>
+    <meta charset="utf-8">
+    <title>申请听课</title>
+    <script src="js/jquery-3.4.1.js"></script>
+    <!-- 引入Layui的CSS文件和JS文件 -->
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="css/layui.css" media="all">
+    <script src="js/layui.js"></script>
+    <!-- 引入Bootstrap的CSS文件和JS文件 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <style type="text/css">
+        #top-panel td {
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+        }
+        #course-info td {
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+        }
+        #SchoolTimetable td {
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+        }
+        #SchoolTimetable td>span {
+            cursor: pointer;
+        }
+        /*提示框*/
+        #teacherList{
+            position: absolute;
+            width: 22em;
+            background-color: #fff;
+            border: 1px solid #999;
+            border-radius: 5px;
+        }
+        #teacherList ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        #teacherList ul li {
+            padding: 3px;
+            line-height: 2em;
+        }
+        #teacherList ul li:hover {
+            background-color: #e5e5e5;
+            cursor: pointer;
+        }
+        /*课程提示框*/
+        #courseDiv{
+            position: absolute;
+            width: 22em;
+            background-color: #fff;
+            border: 1px solid #999;
+            border-radius: 5px;
+        }
+        #courseDiv ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        #courseDiv ul li {
+            padding: 3px;
+            line-height: 2em;
+        }
+        #courseDiv ul li:hover {
+            background-color: #e5e5e5;
+            cursor: pointer;
+        }
+    </style>
+    <script th:inline="javascript">
+        function showCourse() {
+            var teachingTeacherName = document.getElementById("teachingTeacherName").value.trim(" ");
+            var teachingTeacherCourse = document.getElementById("teachingTeacherCourse").value.trim(" ");
+            if (teachingTeacherName.length > 0 && teachingTeacherCourse.length > 0) {
+                // 返回
+                var url = "/autumn/ApplySupervisionByList?userName=" + [[${userName}]] + "&&teachingTeacherName=" + teachingTeacherName + "&&teachingTeacherCourseName=" + teachingTeacherCourse;
+                parent.document.getElementById('mainIframe').src = url;
+            }
+            else if (teachingTeacherCourse.length > 0 && teachingTeacherName.length == 0) {
+                var url = "/autumn/ApplySupervisionByList?userName=" + [[${userName}]] + "&&teachingTeacherName=" + "" + "&&teachingTeacherCourseName=" + teachingTeacherCourse;
+                parent.document.getElementById('mainIframe').src = url;
+            }
+            else if(teachingTeacherCourse.length == 0 && teachingTeacherName.length > 0){
+                // 返回老师课程表
+                var url = "/autumn/ApplySupervisionBySchoolTable?userName=" + [[${userName}]] + "&&teachingTeacherName=" + teachingTeacherName;
+                parent.document.getElementById('mainIframe').src = url;
+            }
+            else {
+                // do nothing.
+            }
+        }
+        function chooseCourse(lessonId) {
+            if (confirm("确认听该课吗?")) {
+                var url = "/autumn/ChooseCourse?userName=" + [[${userName}]] + "&&teachingTeacherName=" + [[${teachingTeacherName}]] + "&&lessonId=" + lessonId;
+                parent.document.getElementById('mainIframe').src = url;
+            }
+        }
+        function chooseCourseList(teachingTeacherName, lessonId) {
+            if (confirm("确认听该课吗?")) {
+                var url = "/autumn/ChooseCourse?userName=" + [[${userName}]] + "&&teachingTeacherName=" + teachingTeacherName + "&&lessonId=" + lessonId;
+                parent.document.getElementById('mainIframe').src = url;
+            }
+        }
+        /*提示框*/
+        function searchTeacher() {
+            var key = document.getElementById("teachingTeacherName").value;
+            if (key.length > 0) {
+                $.ajax({
+                    traditional: true,
+                    type: "post",
+                    dataType: "text",
+                    url: "/autumn/SearchTeacherByName",
+                    data: {
+                        keyword: key,
+                    },
+                    success: function (result) {
+                        var result = JSON.parse(result);
+                        var teacherList = result.data;
+                        var html = "";
+                        if (teacherList.length > 0) {
+                            document.getElementById("teacherList").style.display = "block";
+                            $.each(teacherList, function (i, teacher) {
+                                html = html + "<li>" + teacher.teacherName + "(ID:" + teacher.teacherId + " 职位:" + teacher.teacherPosition + ")</li>";
+                            })
+                            $('#teacherListUl').html(html);
+                            $("li").click(function () {
+                                document.getElementById("teachingTeacherName").value = $(this).html();
+                                document.getElementById("teacherList").style.display = "none";
+                            })
+                        }
+                    },
+                    error: function (result) {
+                        var result = JSON.parse(result);
+                    }
+                })
+            }
+            else {
+                document.getElementById("teacherList").style.display = "none";
+            }
+        }
+        function closeTeacherList() {
+            document.getElementById("teacherList").style.display = 'none';
+        }
+        function changeFocus() {
+            document.getElementById("teacherListUl").focus();
+        }
+        /*Course提示框*/
+        function searchCourse() {
+            var key = document.getElementById("teachingTeacherCourse").value;
+            if (key.length > 0) {
+                $.ajax({
+                    traditional: true,
+                    type: "post",
+                    dataType: "text",
+                    url: "/autumn/SearchCourseByName",
+                    data: {
+                        keyword: key,
+                    },
+                    success: function (result) {
+                        var result = JSON.parse(result);
+                        var subjectList = result.data;
+                        var html = "";
+                        if (subjectList.length > 0) {
+                            document.getElementById("courseDiv").style.display = "block";
+                            $.each(subjectList, function (i, subject) {
+                                console.log(subject.subjectName)
+                                html = html + "<li>" + subject.subjectName + "(ID:" + subject.subjectId + " 性质:" + subject.subjectType + " 学时:" + subject.subjectHour + ")</li>";
+                            })
+                            $('#courseUl').html(html);
+                            $("li").click(function () {
+                                document.getElementById("teachingTeacherCourse").value = $(this).html();
+                                document.getElementById("courseDiv").style.display = "none";
+                            })
+                        }
+                    },
+                    error: function (result) {
+                        var result = JSON.parse(result);
+                    }
+                })
+            }
+            else {
+                document.getElementById("courseDiv").style.display = "none";
+            }
+        }
+        function closeCourseDiv() {
+            document.getElementById("courseDiv").style.display = 'none';
+        }
+        function changeCourseFocus() {
+            document.getElementById("courseUl").focus();
+        }
+    </script>
 </head>
 <body>
-	<div class="container"  align="center" >
-		<h1 class="page-header" align="center">自主选择听课</h1>
-		<form action="">
-		<table class="table table-striped">
+<div class="container" align="center">
+    <h1 class="page-header" align="center">自主选择听课</h1>
+    <table id="top-panel" class="table table-striped">
         <tr>
+            <td>授课老师:</td>
+            <td>
+                <input type="text" id="teachingTeacherName" class="form-control" placeholder="请输入你想听的授课老师姓名" onfocus="searchTeacher()" oninput="searchTeacher()" autocomplete="off" onblur="changeFocus()">
+                <!-- 提示框 -->
+                <div id="teacherList" style="display: none" align="left">
+                    <ul id="teacherListUl" onblur="closeTeacherList()" tabindex="1">
+                        <li>十年生死两茫茫，写程序，到天亮。</li>
+                        <li>千行代码，Bug何处藏。</li>
+                        <li>纵使上线又怎样，朝令改，夕断肠。</li>
+                        <li>领导每天新想法，天天改，日日忙。</li>
+                        <li>相顾无言，惟有泪千行。</li>
+                        <li>每晚灯火阑珊处，程序员，又加班，工作狂...</li>
+                    </ul>
+                </div>
+            </td>
             <td>课程名称:</td>
             <td>
-				<input type="text" class="form-control" placeholder="课程名">
-			</td>
-			<td>授课老师:</td>
+                <input type="text" id="teachingTeacherCourse" class="form-control" placeholder="请输入你想听的课程名字" onfocus="searchCourse()" oninput="searchCourse()" autocomplete="off" onblur="changeCourseFocus()">
+                <!-- 提示框 -->
+                <div id="courseDiv" style="display: none" align="left">
+                    <ul id="courseUl" onblur="closeTeacherList()" tabindex="2">
+                        <li>十年生死两茫茫，写程序，到天亮。</li>
+                        <li>千行代码，Bug何处藏。</li>
+                        <li>纵使上线又怎样，朝令改，夕断肠。</li>
+                        <li>领导每天新想法，天天改，日日忙。</li>
+                        <li>相顾无言，惟有泪千行。</li>
+                        <li>每晚灯火阑珊处，程序员，又加班，工作狂...</li>
+                    </ul>
+                </div>
+            </td>
             <td>
-				<input type="text" class="form-control" placeholder="授课老师">
-			</td>
+                <button onclick="showCourse()" class="btn btn-success">查找</button>
+            </td>
         </tr>
-        <tr>
-            <td>授课时间:</td>
-			<div class="layui-inline">
-				<td>开始时间
-				<div class="layui-input-inline">
-					<input type="text" class="layui-input" id="start_time" placeholder="-非必填-">
-				</div></td>
-				<td>--</td>
-				<td>结束时间
-				<div class="layui-input-inline">
-					<input type="text" class="layui-input" id="end_time" placeholder="-非必填-">
-				</div></td>
-			</div>
-        </tr>
-		<tr>
-			<td><button type="submit" class="btn btn-success">查找</button>
-			<button type="reset" class="btn btn-warning">重置</button></td>
-		</tr>
-     </table>
-	 </form>
-	 <h2 align="left" style="color:rgb(78, 205, 196);">课程推荐</h2>
-	 <table class="layui-hide" id="test"></table>
-	 <div >
-	 <table id="table" class="table table-bordered" >
-		<tr>
-            <td>课程名称</td>
-            <td>老师</td>
-			<td>时间</td>
-			<td>教室</td>
-			<td>选择听课</td>
-			<td>详情</td>
-        </tr>
-		<tr>
-            <td>人工智能</td>
-            <td>张永清</td>
-			<td>9-15 周一1-2节</td>
-			<td>2204</td>
-			<td><button data-method="select" type="button" class="btn btn-success">申请听课</button></td>
-			<td><button data-method="more" type="button" class="btn btn-primary">查看详情</button></td>
-        </tr>
-		<tr>
-            <td>JAVAEE</td>
-            <td>郑丰华</td>
-			<td>9-15 周三9-10节</td>
-			<td>2306</td>
-			<td><button type="button" class="btn btn-success">申请听课</button></td>
-			<td><button type="button" class="btn btn-primary">查看详情</button></td>
-        </tr>
-		<tr>
-            <td>JAVAEE</td>
-            <td>郑丰华</td>
-			<td>9-15 周三9-10节</td>
-			<td>2306</td>
-			<td><button type="button" class="btn btn-success">申请听课</button></td>
-			<td><button type="button" class="btn btn-primary">查看详情</button></td>
-        </tr>
-		<tr>
-            <td>JAVAEE</td>
-            <td>郑丰华</td>
-			<td>9-15 周三9-10节</td>
-			<td>2306</td>
-			<td><button type="button" class="btn btn-success">申请听课</button></td>
-			<td><button type="button" class="btn btn-primary">查看详情</button></td>
-        </tr>
-		<tr>
-            <td>JAVAEE</td>
-            <td>郑丰华</td>
-			<td>9-15 周三9-10节</td>
-			<td>2306</td>
-			<td><button type="button" class="btn btn-success">申请听课</button></td>
-			<td><button type="button" class="btn btn-primary">查看详情</button></td>
-        </tr>
-		<tr>
-            <td>JAVAEE</td>
-            <td>郑丰华</td>
-			<td>9-15 周三9-10节</td>
-			<td>2306</td>
-			<td><button type="button" class="btn btn-success">申请听课</button></td>
-			<td><button type="button" class="btn btn-primary">查看详情</button></td>
-        </tr>
-	</table>
-	</div>
-	</div>
-<script src="js/layui.js"></script>
-<script>
-layui.use(['laydate','laypage', 'layer'], function(){
-  var $=layui.jquery
-  ,laydate = layui.laydate
-  ,laypage = layui.laypage
-  ,layer = layui.layer;
-  var active = {
-	more: function(){
-      //查看更多弹窗，内容还没写，不知道怎么传参
-      layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
-        time: 20000, //20s后自动关闭
-        btn: ['明白了', '知道了', '哦']
-      });
-    }
-	,select: function(){
-      //申请选课点击后具体选择弹窗，内容没有改
-      layer.open({
-        type: 1
-        ,title: "选择具体听课时间"//不显示标题栏
-        ,closeBtn: false
-        ,area: '300px;'
-        ,shade: 0.8
-        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-        ,btn: ['确认', '取消']
-        ,btnAlign: 'c'
-        ,moveType: 1 //拖拽模式，0或者1
-        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>layer ≠ layui<br><br>layer只是作为Layui的一个弹层模块，由于其用户基数较大，所以常常会有人以为layui是layerui<br><br>layer虽然已被 Layui 收编为内置的弹层模块，但仍然会作为一个独立组件全力维护、升级。<br><br>我们此后的征途是星辰大海 ^_^</div>'
-        ,success: function(layero){
-          var btn = layero.find('.btn btn-success');
-          btn.find('.btn btn-danger');
-        }
-      });
-    }
-  };
-	$('#table .btn').on('click', function(){
-    var othis = $(this), method = othis.data('method');
-    active[method] ? active[method].call(this, othis) : '';
-  });
-  
-  //日期范围
-  laydate.render({
-    elem: '#start_time'
-	,calendar: true
-	,theme: '#393D49'
-	,btns: ['confirm']
-  });
-  laydate.render({
-    elem: '#end_time'
-	,calendar: true
-	,theme: '#393D49'
-	,btns: ['confirm']
-  });
-  
-   
-});
-</script>
-<script type="text/javascript" src="js/bootstrap-table.js" />
+    </table>
+
+    <div id="CourseList" th:if="${displayList} == true" th:style="'display:' + @{(${displayList} == true ? 'block' : 'none')} + ''">
+        <h2 align="left" style="color:rgb(78, 205, 196);">课程推荐</h2>
+        <table id="course-info" class="table table-bordered">
+            <tr>
+                <td>课程名称</td>
+                <td>老师</td>
+                <td>时间</td>
+                <td>教室</td>
+                <td>选择听课</td>
+            </tr>
+            <tr th:each="lesson, lessonStat:${lessonList}">
+                <td th:text="${subjectMap.get(lesson.subjectId).subjectName}">课程名称</td>
+                <td th:text="${teacherMap.get(lesson.teacherId).teacherName}">老师</td>
+                <td>
+                    <span th:text="${lesson.lessonDay}"></span>&nbsp;
+                    <span th:text="${lesson.lessonTime}"></span>(
+                    <span th:text="${lesson.subjectStartTime}"></span>-
+                    <span th:text="${lesson.subjectEndTime}"></span>周)
+                </td>
+                <td th:text="${lesson.lessonRoom}">教室</td>
+                <td>
+                    <button th:onclick="javascript:chooseCourseList([[${teacherMap.get(lesson.teacherId).teacherName}]], [[${lesson.lessonId}]])" data-method="select" type="button" class="btn btn-success">申请听课</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 课程表 -->
+    <div id="SchoolTimetableDiv" th:if="${displayTable} == true" th:style="'display:' + @{(${displayTable} == true ? 'block' : 'none')} + ''">
+        <table id="SchoolTimetable" class="table table-bordered">
+            <tr>
+                <td colspan="8"><h2 align="center" style="color:rgb(78, 205, 196);">[[${teachingTeacherName}]]老师的授课课程表</h2></td>
+            </tr>
+            <tr style="background-color: lightgreen">
+                <td>节次/星期</td>
+                <td>星期一</td>
+                <td>星期二</td>
+                <td>星期三</td>
+                <td>星期四</td>
+                <td>星期五</td>
+                <td>星期六</td>
+                <td>星期日</td>
+            </tr>
+
+            <tr th:each="i:${#numbers.sequence(1,2)}">
+                <td th:if="${i} == 1" style="background-color: darkorange">上午一二节</td>
+                <td th:if="${i} == 2" style="background-color: darkorange">上午三四节</td>
+                <td th:each="j:${#numbers.sequence(1,7)}" th:style="'background-color:' + @{(${teacherLessonMap.get(j * 10 + i).lessonRoom} != '' ? 'lightseagreen' : 'white')} + ''">
+                    <span th:onclick="javascript:chooseCourse([[${teacherLessonMap.get(j * 10 + i).lessonId}]])">
+                        <p th:text="${subjectMap.get(teacherLessonMap.get(j * 10 + i).getSubjectId()).subjectName}">课程名</p>
+                        <p th:text="${teacherLessonMap.get(j * 10 + i).lessonRoom}">地点</p>
+                        <span th:text="${teacherLessonMap.get(j * 10 + i).subjectStartTime}"></span>
+                        <span th:if="${teacherLessonMap.get(j * 10 + i).lessonRoom} != ''">-</span>
+                        <span th:text="${teacherLessonMap.get(j * 10 + i).subjectEndTime}"></span>
+                        <span th:if="${teacherLessonMap.get(j * 10 + i).lessonRoom} != ''">周</span>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">Good Noon!</td>
+            </tr>
+            <tr th:each="i:${#numbers.sequence(3,4)}">
+                <td th:if="${i} == 3" style="background-color: lightskyblue">下午五六节</td>
+                <td th:if="${i} == 4" style="background-color: lightskyblue">下午七八节</td>
+                <td th:each="j:${#numbers.sequence(1,7)}" th:style="'background-color:' + @{(${teacherLessonMap.get(j * 10 + i).lessonRoom} != '' ? 'lightseagreen' : 'white')} + ''">
+                    <span th:onclick="javascript:chooseCourse([[${teacherLessonMap.get(j * 10 + i).lessonId}]])">
+                        <p th:text="${subjectMap.get(teacherLessonMap.get(j * 10 + i).getSubjectId()).subjectName}">课程名</p>
+                        <p th:text="${teacherLessonMap.get(j * 10 + i).lessonRoom}">地点</p>
+                        <span th:text="${teacherLessonMap.get(j * 10 + i).subjectStartTime}"></span>
+                        <span th:if="${teacherLessonMap.get(j * 10 + i).lessonRoom} != ''">-</span>
+                        <span th:text="${teacherLessonMap.get(j * 10 + i).subjectEndTime}"></span>
+                        <span th:if="${teacherLessonMap.get(j * 10 + i).lessonRoom} != ''">周</span>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">Good Evening!</td>
+            </tr>
+            <tr th:each="i:${#numbers.sequence(5,6)}">
+                <td th:if="${i} == 5" style="background-color: aquamarine">晚上九十节</td>
+                <td th:if="${i} == 6" style="background-color: aquamarine">晚上十一二节</td>
+                <td th:each="j:${#numbers.sequence(1,7)}" th:style="'background-color:' + @{(${teacherLessonMap.get(j * 10 + i).lessonRoom} != '' ? 'lightseagreen' : 'white')} + ''">
+                    <span th:onclick="javascript:chooseCourse([[${teacherLessonMap.get(j * 10 + i).lessonId}]])">
+                        <p th:text="${subjectMap.get(teacherLessonMap.get(j * 10 + i).getSubjectId()).subjectName}">课程名</p>
+                        <p th:text="${teacherLessonMap.get(j * 10 + i).lessonRoom}">地点</p>
+                        <span th:text="${teacherLessonMap.get(j * 10 + i).subjectStartTime}"></span>
+                        <span th:if="${teacherLessonMap.get(j * 10 + i).lessonRoom} != ''">-</span>
+                        <span th:text="${teacherLessonMap.get(j * 10 + i).subjectEndTime}"></span>
+                        <span th:if="${teacherLessonMap.get(j * 10 + i).lessonRoom} != ''">周</span>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 </body>
 </html>

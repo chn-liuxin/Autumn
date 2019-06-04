@@ -48,4 +48,10 @@ public class ClassServiceImpl implements ClassService {
     public Class getClassById(String classId) {
         return classMapper.getClassById(classId);
     }
+
+    @Override
+    public List<Class> getClassFuzzy(String classMajor) {
+        classMajor = new StringBuilder("%").append(classMajor).append("%").toString();
+        return classMapper.getClassFuzzy(classMajor);
+    };
 }

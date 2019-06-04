@@ -1,5 +1,12 @@
 package edu.cuit.autumn.entity;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Class {
 
     /**
@@ -8,12 +15,13 @@ public class Class {
      * @Param classMajor：专业名称,如:计算机科学与技术
      * @Param classNumber：班级,如:2班
      */
+    @XmlAttribute
     private String classId;
-
+    @XmlAttribute
     private Short classSession;
-
+    @XmlAttribute
     private String classMajor;
-
+    @XmlAttribute
     private Byte classNumber;
 
     public String getClassId() {

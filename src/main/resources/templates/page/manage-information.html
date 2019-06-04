@@ -1,37 +1,298 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>修改信息</title>
+    <meta charset="utf-8">
+    <title>录入评价表</title>
+    <script src="js/jquery.min.js"></script>
     <!-- 引入Layui的CSS文件和JS文件 -->
     <link rel="stylesheet" href="css/layui.css">
     <script src="js/layui.js"></script>
     <!-- 引入Bootstrap的CSS文件和JS文件 -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/other.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css"/>
+    <script src="js/jquery-ui.min.js"></script>
     <style type="text/css">
-        td{
-            font-size: large;
+        html,body {
+            height: 100%;
+            background-color: #f7f7f7;
+            font-size: 18px;
+            border-radius: 2px;
         }
+        .default {
+            background: #e1e1e1;
+            height: 0.35em;
+            width: 1.1em;
+        }
+        .weak {
+            background: #ff6b50;
+            height: 0.35em;
+            width: 1.1em;
+            border-radius: 2px;
+        }
+        .medium {
+            background: #ffbe2b;
+            height: 0.35em;
+            width: 1.1em;
+            border-radius: 2px;
+        }
+        .strong {
+            background: #64cc54;
+            height: 0.35em;
+            width: 1.1em;
+            border-radius: 2px;
+        }
+        span {display: inline-block;width: 1.1em;height: 0.35em;line-height: 30px;background: #e1e1e1;text-align: center;margin: 4px 2px; border-radius: 2px;}
+        input{
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 18px;
+            line-height: 1.5;
+            color:#3a3a3a;
+            width:20em;
+        }
+        label{
+            margin-left: 1.5em;
+        }
+        tr{
+            letter-spacing: 1px;
+        }
+        .tips{
+            font-size: 12px;
+            color: #ff6b50;
+            font-weight: 500;
+        }
+        .glyphicon-ok {
+            font-size: 13px;
+            color: #64cc54;
+            font-weight: 300;
+        }
+        .glyphicon-remove{
+            font-size: 13px;
+            color: #ff6b50;
+            font-weight: 300;
+        }
+
     </style>
+    <script th:inline="javascript">
+        window.onload=function() {
+            var info_btn = document.getElementById("saveInfo");
+            var pwd_btn = document.getElementById("savePwd");
+            var oldPwd = document.getElementById("oldPwd");
+            var surePwd = document.getElementById('surePwd');
+            var oldPwdTip = document.getElementById('oldPwdTip');
+            var phone = document.getElementById('teacherPhone');
+            var userName = document.getElementById('userName');
+            var phoneTip = document.getElementById('phoneTip');
+            var surePwdTip = document.getElementById('surePwdTip');
+            var nameTip = document.getElementById('nameTip');
+            var oInput = document.getElementById('pwd');
+            var spans = document.getElementsByTagName('span');
+            showMessage();
+            oInput.onkeyup = function () {//强度状态设为默认
+                spans[0].className = spans[1].className = spans[2].className = "default";
+                var pwd = this.value;
+                var result = 0;
+                for (var i = 0, len = pwd.length; i < len; ++i) {
+                    result |= charType(pwd.charCodeAt(i));
+                }
+                var level = 0;
+                //对result进行四次循环，计算其level
+                for (var i = 0; i <= 4; i++) {
+                    if (result & 1) {
+                        level++;
+                    }
+                    //右移一位
+                    result = result >>> 1;
+                }
+                if (pwd.length >= 8) {
+                    switch (level) {
+                        case 1:
+                            spans[0].className = "weak";
+                            break;
+                        case 2:
+                            spans[0].className = "medium";
+                            spans[1].className = "medium";
+                            break;
+                        case 3:
+                        case 4:
+                            spans[0].className = "strong";
+                            spans[1].className = "strong";
+                            spans[2].className = "strong";
+                            break;
+                    }
+                }
+                pwdCheck();
+                btn();
+            }
+            phone.onkeyup = function () {
+                var phonev = document.getElementById('teacherPhone').value;
+                if (phonev.length != 11) {
+                    phoneTip.className = "tips";
+                    phoneTip.innerHTML = "*请输入11位手机号码";
+                } else {
+                    phoneTip.className = "glyphicon glyphicon-ok ";
+                    phoneTip.innerHTML = "";
+                }
+                btn();
+            }
+            userName.onkeyup = function () {
+                var name = document.getElementById('userName').value;
+                if (name == "") {
+                    nameTip.innerText = "*用户名不能为空！";
+                    nameTip.className = "tips";
+                } else {
+                    $.ajax({
+                        type: "post",
+                        dataType: "json",
+                        url: "/autumn/ManageInfoCheck",
+                        data: {
+                            "userName": name,
+                        },
+                        success: function (data) {
+                            var result = data.result;
+                            if (result == "ok")//trim()去空格
+                            {
+                                nameTip.innerHTML = "";
+                                nameTip.className = "glyphicon glyphicon-ok";
+                            } else {
+                                nameTip.innerHTML = "*用户名已存在"
+                                nameTip.className = "tips";
+                            }
+                            btn();
+                        },
+                        error: function (data) {
+                            alert("数据拉取失败！");
+                        }
+                    });
+                }
+                btn();
+            }
+            oldPwd.onkeyup = function () {
+                pwdCheck();
+                btn();
+            }
+            surePwd.onkeyup = function () {
+                pwdCheck();
+                btn();
+            }
+
+            function btn() {
+                if (nameTip.className == 'tips' || phoneTip.className == 'tips') {
+                    info_btn.disabled = true;
+                } else {
+                    info_btn.disabled = false;
+                }
+                if (surePwdTip.className == 'glyphicon glyphicon-remove' || surePwdTip.className == 'tips' || oldPwdTip.innerHTML != "" || spans[0].className == "default") {
+                    pwd_btn.disabled = true;
+                } else {
+                    pwd_btn.disabled = false;
+                }
+            }
+
+            function pwdCheck() {
+                var newPwdv = document.getElementById('pwd').value;
+                var surePwdv = document.getElementById('surePwd').value;
+                var oldPwdv = document.getElementById('oldPwd').value;
+
+
+                if ((surePwdv != "" || newPwdv != "") && oldPwdv == "") {
+                    oldPwdTip.className = "tips";
+                    oldPwdTip.innerHTML = "*输入原密码！";
+                }
+                if (oldPwdv != "") {
+                    oldPwdTip.className = "glyphicon glyphicon-ok";
+                    oldPwdTip.innerHTML = "";
+                }
+
+                if (newPwdv == surePwdv) {
+                    if (newPwdv != "") {
+                        if (spans[0].className == "strong" || spans[0].className == "medium") {
+                            surePwdTip.className = "glyphicon glyphicon-ok";
+                            surePwdTip.innerHTML = "";
+                        }
+                        if (spans[0].className == "weak" || spans[0].className == "default") {
+                            surePwdTip.className = "tips";
+                            surePwdTip.innerHTML = "*密码强度为弱！";
+                        }
+
+                    }
+                } else {
+                    surePwdTip.className = "glyphicon glyphicon-remove";
+                    surePwdTip.innerHTML = "";
+                }
+            }
+        }
+        function charType(num){
+            if(num >= 48 && num <= 57){
+                return 1;
+            }
+            if (num >= 97 && num <= 122) {
+                return 2;
+            }
+            if (num >= 65 && num <= 90) {
+                return 4;
+            }
+            return 8;
+        }
+        function editInfo(){
+            alert("是否确认修改信息？");
+        }
+        function showMessage()
+        {
+            var message = [[${message}]];
+            if(message!=null){
+                alert(message);
+            }
+
+        }
+    </script>
+
+
+
 </head>
 <body>
-    <h1 class="page-header" align="center">修改信息</h1>
-    <div class="container" align="center">
-        <form action="#">
-            <table class="table table-striped">
-                <tr>
-                    <td>账号：<input type="text"></td>
-                </tr>
-                <tr>
-                    <td>密码：<input type="text"></td>
-                </tr>
-                <tr>
-                    <td>身份：<input type="text"></td>
-                </tr>
-            </table>
-            <button class="btn btn-success">提交修改</button>
-        </form>
+<h1 class="page-header" align="center" style="border-bottom-color: #71709e;color:#71709e;border-bottom-width: 2px">修改信息</h1>
+
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active"><a href="#info" data-toggle="tab"  style="color:#8D8D8D">基本信息</a></li>
+        <li><a href="#passwd" data-toggle="tab"  style="color:#8D8D8D">修改密码</a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div id="info" class="tab-pane fade in active">
+            <form action="/autumn/EditInfo" method="post">
+                <table class="table table-responsive" >
+                    <tr>
+                        <td>上传头像<input class="layui-upload-file"  name="head" type="text"><label style="font-size: 12px;color:#5e5e5e;font-weight: 300">*图片大小不要超过1M</label></td>
+                    </tr>
+                    <tr>
+                        <td>用户名:<input class="input-edit" id="userName" name="userName" type="text" th:value = "${user.userName}"><label id="nameTip" class="glyphicon glyphicon-ok"></label><label style="font-size: 12px;color:#5e5e5e;font-weight: 300">*用户名为登录账号，必须唯一</label></td>
+                    </tr>
+                    <tr>
+                        <td>生日: <input type="date" name="teacherBirthday" id="reviewDate"  th:value= "${#dates.format(teacher.teacherBirthday, 'yyyy-MM-dd')}" ></td>
+                    </tr>
+                    <tr>
+                        <td>电话： <input class="input-edit" id="teacherPhone" name="teacherPhone" type="text" th:value = "${teacher.teacherPhone}" ><label id="phoneTip" class="glyphicon glyphicon-ok"></label></td>
+                    </tr>
+                    <tr align="center"><td><button id="saveInfo" class="btn btn-success" type="submit" onclick="editInfo()" disabled="true">修改</button></td></tr>
+                </table>
+            </form>
+        </div>
+        <div id="passwd" class="tab-pane fade">
+            <form action="/autumn/EditPwd" method="post">
+                <table class="table table-responsive ">
+                    <tr><td>原密码:<input  class="input-edit" id="oldPwd" name="oldPwd" type="password" ><label id="oldPwdTip"></label></td></tr>
+                    <tr><td>新密码<input class="input-edit"  name="newPwd" type="password" id="pwd" ><label id="newPwdTip"></label><span style="margin-left: 1em;"></span><span ></span><span ></span><label style="font-size: 12px;color:#5e5e5e;font-weight: 300">*密码由8-12个符号、数字、大小写字母组成，必须包含两种类型以上的字符！</label></td></tr>
+                    <tr><td>确认新密码 <input class="input-edit" id="surePwd" name="surePwd" type="password" ><label id="surePwdTip"></label></td></tr>
+                    <tr align="center"><td><button id="savePwd" class="btn btn-success" type="submit" onclick="editInfo()" disabled="true">修改</button></td></tr>
+                </table >
+
+            </form>
+        </div>
     </div>
+
 </body>
 </html>

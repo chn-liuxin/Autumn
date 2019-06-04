@@ -27,4 +27,11 @@ public interface TeacherService {
     //根据老师id查询
     Teacher getTeacherById(String teacherId);
 
+    //老师名字模糊查询
+    List<Teacher> getTeacherFuzzy(String teacherName);
+
+    int getTeacherCount();
+
+    List<Teacher> getTeacherByIndex(int start, int end);
+
 }

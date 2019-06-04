@@ -1,231 +1,569 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>录入评价表</title>
-  <!-- 引入Layui的CSS文件和JS文件 -->
-  <link rel="stylesheet" href="css/layui.css">
-  <script src="js/layui.js"></script>
-  <!-- 引入Bootstrap的CSS文件和JS文件 -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <script src="js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="css/other.css">
+    <meta charset="utf-8">
+    <title>录入评价表</title>
+    <script src="js/jquery.min.js"></script>
+    <!-- 引入Layui的CSS文件和JS文件 -->
+    <link rel="stylesheet" href="css/layui.css">
+    <script src="js/layui.js"></script>
+    <!-- 引入Bootstrap的CSS文件和JS文件 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/other.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css"/>
+    <script src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        function entry_rev() {
+            var teacherId=$('#teacherId').text();
+            var teacherId1=$('#teacherId1').text();
+            var subjectId=$('#subjectId').text();
+            var classId=$('#classId').text();
+            var theme=document.getElementById('theme').value;
+            var reviewDate=document.getElementById('reviewDate').value;
+            var classroom=document.getElementById('classroom').value;
+            var score1 = document.getElementById('score1').value;
+            var score2 = document.getElementById('score2').value;
+            var score3 = document.getElementById('score3').value;
+            var score4 = document.getElementById('score4').value;
+            var score5 = document.getElementById('score5').value;
+            var score6 = document.getElementById('score6').value;
+            var score7 = document.getElementById('score7').value;
+            var score8 = document.getElementById('score8').value;
+            var score9 = document.getElementById('score9').value;
+            var score10 = document.getElementById('score10').value;
+            var radio1 = $("input[name='optionsRadios']:radio:checked").val();
+            var radio2 = $("input[name='optionsRadios1']:radio:checked").val();
+            var radio3 = $("input[name='optionsRadios2']:radio:checked").val();
+            var radio4 = $("input[name='optionsRadios3']:radio:checked").val();
+            var radio5 = $("input[name='optionsRadios4']:radio:checked").val();
+            var radio6 = $("input[name='optionsRadios5']:radio:checked").val();
+            var radio7 = $("input[name='optionsRadios6']:radio:checked").val();
+            var review = document.getElementById("review").value;
+            var other=document.getElementById("other").value;
+            if(teacherId=="教师id") {
+                alert("请选择授课教师");
+            }else {
+                if(teacherId1=="教师id"){
+                    alert("请选择听课老师")
+                }
+                else {
+                    if (subjectId == "课程id") {
+                        alert("请选择课程");
+                    }
+                    else {
+                        if (classId == "班级id") {
+                            alert("请选择班级");
+                        }
+                        else {
+                            if (score1 == null || score2 == null || score3 == null || score4 == null || score5 == null || score6 == null || score7 == null || score8 == null || score9 == null ||score10 == null || review == null) {
+                                alert("数据输入不完整");
+                            }
+                            else {
+                                $.ajax({
+                                    traditional: true,
+                                    type: "post",
+                                    dataType: "text",
+                                    url: "/autumn/EntryReview",
+                                    data: {
+                                        type: 'type4',
+                                        teacherId: teacherId,
+                                        teacherId1: teacherId1,
+                                        subjectId: subjectId,
+                                        classId: classId,
+                                        theme:theme,
+                                        reviewDate:reviewDate,
+                                        classroom:classroom,
+                                        score1: score1,
+                                        score2: score2,
+                                        score3: score3,
+                                        score4: score4,
+                                        score5: score5,
+                                        score6: score6,
+                                        score7: score7,
+                                        score8: score8,
+                                        score9: score9,
+                                        score10:score10,
+                                        radio1:radio1,
+                                        radio2:radio2,
+                                        radio3:radio3,
+                                        radio4:radio4,
+                                        radio5:radio5,
+                                        radio6:radio6,
+                                        radio7:radio7,
+                                        review: review,
+                                        other:other,
+                                    },
+                                    success: function (result) {
+                                        alert("数据提交成功");
+                                    }
+                                })
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $(function() {
+            $( ".slider.1" ).slider({
+                orientation: "horizontal",
+                range:"min",
+                min:0,
+                max:8,
+                slide:function (event,ui) {
+                    $(this).parents("tr").find("input.value").val(ui.value);
+                }
+            });
+            $( ".slider.2" ).slider({
+                orientation: "horizontal",
+                range:"min",
+                min:0,
+                max:10,
+                slide:function (event,ui) {
+                    $(this).parents("tr").find("input.value").val(ui.value);
+                }
+            });
+            $( ".slider.3" ).slider({
+                orientation: "horizontal",
+                range:"min",
+                min:0,
+                max:15,
+                slide:function (event,ui) {
+                    $(this).parents("tr").find("input.value").val(ui.value);
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function hideTable() {
+            $('#theTable').hide();
+        }
+        function showTable() {
+            $('#theTable').show();
+        }
+        function teacher() {
+            var teacherName = document.getElementById('teacherName').value;
+            $.ajax({
+                traditional: true,
+                type: "post",
+                dataType: "xml",
+                url: "/autumn/EntryReviewExp",
+                data: {
+                    type: 'type1',
+                    teacherName: teacherName,
+                },
+                success: function (result) {
+                    $('#theTable').html("");
+                    $('#teacherId').html("教师Id");
+                    var thead1 = "<tr><td>教师id</td><td>教师名字</td><td>教师身份</td><td></td></tr>";
+                    $('#theTable').append(thead1);
+                    $(result).find("teacher").each(function () {
+                        var teacherName = $(this).attr("teacherName");
+                        var teacherId = $(this).attr("teacherId");
+                        var teacherPosition = $(this).attr("teacherPosition");
+                        var tbody = $("<tr><td class='Id'>" + teacherId + "</td>" + "<td class='Name'>" + teacherName + "</td>" + "<td class='Position'>" + teacherPosition + "</td><td><button class='chooseId'>点击选择</button></td></tr>");
+                        $('#theTable').append(tbody);
+                    })
+                    $('#theTable').off("click");
+                    $('#theTable').on('click', '.chooseId', function () {
+                        var id=$(this).parents("tr").find("td.Id").text();
+                        var name=$(this).parents("tr").find("td.Name").text();
+                        $('#teacherId').html(id);
+                        $('#teacherName').val(name);
+                        $(".chooseId").html("点击选择");
+                        $(this).html("已选中");
+
+                    })
+                },
+                error:
+
+                    function (result) {
+                        alert("数据拉取错误");
+                    }
+            })
+        }
+        function teacher1() {
+            var teacherName = document.getElementById('teacherName1').value;
+            $.ajax({
+                traditional: true,
+                type: "post",
+                dataType: "xml",
+                url: "/autumn/EntryReviewExp",
+                data: {
+                    type: 'type1',
+                    teacherName: teacherName,
+                },
+                success: function (result) {
+                    $('#theTable').html("");
+                    $('#teacherId1').html("教师Id");
+                    var thead1 = "<tr><td>教师id</td><td>教师名字</td><td>教师身份</td><td></td></tr>";
+                    $('#theTable').append(thead1);
+                    $(result).find("teacher").each(function () {
+                        var teacherName = $(this).attr("teacherName");
+                        var teacherId = $(this).attr("teacherId");
+                        var teacherPosition = $(this).attr("teacherPosition");
+                        var tbody = $("<tr><td class='Id'>" + teacherId + "</td>" + "<td class='Name'>" + teacherName + "</td>" + "<td class='Position'>" + teacherPosition + "</td><td><button class='chooseId'>点击选择</button></td></tr>");
+                        $('#theTable').append(tbody);
+                    })
+                    $('#theTable').off("click");
+                    $('#theTable').on('click', '.chooseId', function () {
+                        var id=$(this).parents("tr").find("td.Id").text();
+                        var name=$(this).parents("tr").find("td.Name").text();
+                        $('#teacherId1').html(id);
+                        $('#teacherName1').val(name);
+                        $(".chooseId").html("点击选择");
+                        $(this).html("已选中");
+
+                    })
+                },
+                error:
+
+                    function (result) {
+                        alert("数据拉取错误");
+                    }
+            })
+        }
+        function subject() {
+            var subjectName = document.getElementById('subjectName').value;
+            $.ajax({
+                traditional: true,
+                type: "post",
+                dataType: "xml",
+                url: "/autumn/EntryReviewExp",
+                data: {
+                    type: 'type2',
+                    subjectName: subjectName,
+                },
+                success: function (result) {
+                    $('#theTable').html("");
+                    $('#subjectId').html("课程Id");
+                    var thead1 = "<tr><td>课程id</td><td>课程名字</td><td></td></tr>";
+                    $('#theTable').append(thead1);
+                    $(result).find("subject").each(function () {
+                        var subjectName = $(this).attr("subjectName");
+                        var subjectId = $(this).attr("subjectId");
+                        var tbody = $("<tr><td class='Id'>" + subjectId + "</td>" + "<td class='Name'>" + subjectName + "</td><td><button class='chooseId'>点击选择</button></td></tr>");
+                        $('#theTable').append(tbody);
+                    })
+                    $('#theTable').off("click");
+                    $('#theTable').on('click', '.chooseId', function () {
+                        var id=$(this).parents("tr").find("td.Id").text();
+                        var name=$(this).parents("tr").find("td.Name").text();
+                        $('#subjectId').html(id);
+                        $('#subjectName').val(name);
+                        $(".chooseId").html("点击选择");
+                        $(this).html("已选中");
+
+                    })
+                },
+                error:
+                    function (result) {
+                        alert("数据拉取错误");
+                    }
+            })
+        }
+        function myclass() {
+            var classMajor= document.getElementById('classMajor').value;
+            $.ajax({
+                traditional: true,
+                type: "post",
+                dataType: "xml",
+                url: "/autumn/EntryReviewExp",
+                data: {
+                    type: 'type3',
+                    classMajor: classMajor,
+                },
+                success: function (result) {
+                    $('#theTable').html("");
+                    $('#classId').html("班级Id");
+                    var thead1 = "<tr><td>班级id</td><td>系</td><td>年级</td><td>班级</td><td></td></tr>";
+                    $('#theTable').append(thead1);
+                    $(result).find("class").each(function () {
+                        var classId = $(this).attr("classId");
+                        var classSession = $(this).attr("classSession");
+                        var classMajor = $(this).attr("classMajor");
+                        var classNumber = $(this).attr("classNumber");
+                        var tbody = $("<tr><td class='Id'>" + classId + "</td><td class='Major'>" + classMajor +"系</td><td class='session'>"+classSession+ "级</td><td class='Number'>"+classNumber+"班</td><td><button class='chooseId'>点击选择</button></td><</tr>");
+                        $('#theTable').append(tbody);
+                    })
+                    $('#theTable').off("click");
+                    $('#theTable').on('click', '.chooseId', function () {
+                        var id=$(this).parents("tr").find("td.Id").text();
+                        $('#classId').html(id);
+                        $(".chooseId").html("点击选择");
+                        $(this).html("已选中");
+                    })
+                },
+                error:
+                    function (result) {
+                        alert("数据拉取错误");
+                    }
+            })
+        }
+    </script>
 </head>
 <body>
-  <div class="container" align="center">
-    <h1 class="page-header" align="center">同行听课评价表(理论课/<a href="/autumn/EntryReviewExp">实验课</a>)</h1>
-    <table class="table table-striped">
-        <tr>
-            <td>授课教师:</td>
-            <td><input type="text"></td>
-            <td>课程名称:</td>
-            <td><input type="text"></td>
-        </tr>
-        <tr>
-            <td>授课班级:</td>
-            <td><input type="text"></td>
-            <td>授课时间:</td>
-            <td><input type="text"></td>
-        </tr>
-        <tr>
-            <td>授课主题:</td>
-            <td><input type="text"></td>
-            <td>授课地点:</td>
-            <td><input type="text"></td>
-        </tr>  
-    </table>
-    <table class="table table-bordered">
-        <tr align="center">
-            <td>评价类别</td>
-            <td>评价项目</td>
-            <td>项目总分</td>
-            <td>评价标准</td>
-            <td>评价等级</td>
-        </tr>
-        <tr align="center">
-            <td rowspan="6" style="display:table-cell; vertical-align:middle">教</td>
-            <td align="left">1、教学内容和目标明确，符合教学大纲要求</td>
-            <td>8分</td>
-            <td align="left">1星(1分)、2星(3分)、3星(5分)、4星(7分)、5星(8分)</td>
-            <td>4</td>
-        </tr>
-        <tr align="center">
-            <td align="left">2、教学内容娴熟，问题阐述收放自如</td>
-            <td>15分</td>
-            <td align="left">1星(4分)、2星(7分)、3星(10分)、4星(13分)、5星(15分)</td>
-            <td>4</td>
-        </tr>
-        <tr align="center">
-            <td align="left">3、讲述条理清晰，概念准确，重点突出</td>
-            <td>10分</td>
-            <td align="left">1星(2分)、2星(4分)、3星(6分)、4星(8分)、5星(10分)</td>
-            <td>4</td>
+<h1 class="page-header" align="center">同行听课评价表(理论课/<a href="/autumn/EntryReviewExp">实验课</a>)</h1>
+<ul id="myTab" class="nav nav-tabs">
+    <li class="active"><a href="#first" data-toggle="tab" onclick="showTable()">第一页</a></li>
+    <li><a href="#second" data-toggle="tab" onclick="hideTable()">第二页</a></li>
+    <li><a href="#third" data-toggle="tab" onclick="hideTable()">第三页</a></li>
+    <li><a href="#fourth" data-toggle="tab" onclick="hideTable()">第四页</a></li>
+</ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade in active" id="first">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <td>授课教师:</td>
+                <td><input type="text" id="teacherName"></td>
+                <td><span id="teacherId">教师Id</span></td>
+                <td><button onclick="teacher()">点击查询</button></td>
+                <td>授课主题:</td>
+                <td><input type="text" id="theme"></td>
             </tr>
-        <tr align="center">
-            <td align="left">4、使用普通话，语言表达清楚、简洁、准确、语速适中</td>
-            <td>8分</td>
-            <td align="left">1星(1分)、2星(3分)、3星(5分)、4星(7分)、5星(8分)</td>
-            <td>4</td>
-        </tr>
-        <tr align="center">
-            <td align="left">5、PPT制作精良，板书规范，能有效利用各种教学媒体</td>
-            <td>8分</td>
-            <td align="left">1星(1分)、2星(3分)、3星(5分)、4星(7分)、5星(8分)</td>
-            <td>4</td>
-        </tr>
-        <tr align="center">
-            <td align="left">6、有先进的教学理念、实用的教学方法，教学设计精心、课堂效果好</td>
-            <td>10分</td>
-            <td align="left">1星(2分)、2星(4分)、3星(6分)、4星(8分)、5星(10分)</td>
-            <td>4</td>
-        </tr>
-        <!-- 学 -->
-        <tr align="center">
-            <td rowspan="4" style="display:table-cell; vertical-align:middle">学</td>
-            <td align="left">7、教学内容和目标明确，符合教学大纲要求</td>
-            <td>10分</td>
-            <td align="left">1星(2分)、2星(4分)、3星(6分)、4星(8分)、5星(10分)</td>
-            <td>4</td>
-        </tr>
-        <tr align="center">
-            <td align="left">8、使用普通话，语言表达清楚、简洁、准确、语速适中</td>
-            <td>8分</td>
-            <td align="left">1星(1分)、2星(3分)、3星(5分)、4星(7分)、5星(8分)</td>
-            <td>4</td>
-        </tr>
-        <tr align="center">
-            <td align="left">9、PPT制作精良，板书规范，能有效利用各种教学媒体</td>
-            <td>8分</td>
-            <td align="left">1星(1分)、2星(3分)、3星(5分)、4星(7分)、5星(8分)</td>
-            <td>4</td>
-        </tr>
-        <tr align="center">
-            <td align="left">10、有先进的教学理念、实用的教学方法，教学设计精心、课堂效果好</td>
-            <td>15分</td>
-            <td align="left">1星(4分)、2星(7分)、3星(10分)、4星(13分)、5星(15分)</td>
-            <td>4</td>
-        </tr>
-     </table>
-     <table class="table table-striped">
-        <tr>
-            <td>教师情况:</td>
-            <td>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1"> 提前5分钟以上进入教师准备
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox2" value="option2"> 迟到
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 早退
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>课堂氛围:</td>
-            <td>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1"> 活跃
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox2" value="option2"> 沉闷
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 轻松
-                </label>
-                <label class="checkbox-inline">
-                        <input type="checkbox" id="inlineCheckbox3" value="option3"> 安静
-                </label>
-                <label class="checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox3" value="option3"> 其他
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>学生情况:</td>
-            <td>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1"> 大多数认真听讲
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox2" value="option2"> 一半认真听讲
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 只有少数人听
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 少数玩手机
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 部分玩手机
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>教材情况:</td>
-            <td>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1"> 学生手上有正式教材
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox2" value="option2"> 学生手上有自编讲义
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 学生手上有分发资料
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 学生手上有无资料教材
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>抬头情况:</td>
-            <td>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1"> 大多数学生抬头看老师
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox2" value="option2"> 半数左右学生抬头看老师
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 只有少学生抬头看老师
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>就座情况:</td>
-            <td>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1"> 前三排基本坐满
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox2" value="option2"> 前三排座位空余较多
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 学生主要选择教室中后部分就座
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>授课形式:</td>
-            <td>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1"> 完全单向教师讲、学生听
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox2" value="option2"> 有讨论、提问交流等互动
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 有探究法或其他新教学模式应用
-                </label>
-            </td>
-        </tr>  
-     </table>
-     <h4 align="left">总体评价:</h4>
-     <textarea class="form-control" rows="5"></textarea><br />
-     <h4 align="left">存在问题/需要改进的地方及具体改进建议/对你的启发(不少于100字):</h4>
-     <textarea class="form-control" rows="5"></textarea><br />
-     <button class="btn btn-success">提交记录</button><hr>
-  </div>
+            <tr>
+                <td>听课老师:</td>
+                <td><input type="text" id="teacherName1"></td>
+                <td><span id="teacherId1">教师Id</span></td>
+                <td><button onclick="teacher1()">点击查询</button></td>
+                <td>授课时间:</td>
+                <td><input type="date" id="reviewDate"></td>
+            </tr>
+            <tr>
+                <td>课程名称:</td>
+                <td><input type="text" id="subjectName"></td>
+                <td><span id="subjectId">课程id</span></td>
+                <td><button onclick="subject()">点击查询</button></td>
+                <td>授课地点:</td>
+                <td><input type="text" id="classroom"></td>
+            </tr>
+            <tr>
+                <td>授课班级:</td>
+                <td><input type="text" id="classMajor"></td>
+                <td><span id="classId">班级id</span></td>
+                <td><button onclick="myclass()">点击查询</button></td>
+                <td></td><td></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table class="table table-bordered table-striped">
+            <tbody id="theTable"></tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="second">
+        <table class="table table-bordered table-striped" align="center">
+            <tr align="center">
+                <td>评价类别</td>
+                <td>评价项目</td>
+                <td>项目总分</td>
+                <td>滑动评分</td>
+                <td>评价分数</td>
+            </tr>
+            <tr align="center">
+                <td rowspan="6" style="display:table-cell; vertical-align:middle">教</td>
+                <td align="left">1、教学内容和目标明确，符合教学大纲要求</td>
+                <td>8分</td>
+                <td ><div class="slider 1" STYLE="width: 80%"></div></td>
+                <td><input id="score1" class="value" disabled="disabled"></td>
+            </tr>
+            <tr align="center">
+                <td align="left">2、教学内容娴熟，问题阐述收放自如</td>
+                <td>15分</td>
+                <td ><div class="slider 3" STYLE="width: 80%"></div></td>
+                <td><input id="score2" class="value" disabled="disabled"></td>
+            </tr>
+            <tr align="center">
+                <td align="left">3、讲述条理清晰，概念准确，重点突出</td>
+                <td>10分</td>
+                <td ><div class="slider 2" STYLE="width: 80%"></div></td>
+                <td><input id="score3" class="value" disabled="disabled"></td>
+            </tr>
+            <tr align="center">
+                <td align="left">4、使用普通话，语言表达清楚、简洁、准确、语速适中</td>
+                <td>8分</td>
+                <td ><div class="slider 1" STYLE="width: 80%"></div></td>
+                <td><input id="score4" class="value" disabled="disabled"></td>
+            </tr>
+            <tr align="center">
+                <td align="left">5、PPT制作精良，板书规范，能有效利用各种教学媒体</td>
+                <td>8分</td>
+                <td ><div class="slider 1" STYLE="width: 80%"></div></td>
+                <td><input id="score5" class="value" disabled="disabled"></td>
+            </tr>
+            <tr align="center">
+                <td align="left">6、有先进的教学理念、实用的教学方法，教学设计精心、课堂效果好</td>
+                <td>10分</td>
+                <td ><div class="slider 2" STYLE="width: 80%"></div></td>
+                <td><input id="score6" class="value" disabled="disabled"></td>
+            </tr>
+            <!-- 学 -->
+            <tr align="center">
+                <td rowspan="4" style="display:table-cell; vertical-align:middle">学</td>
+                <td align="left">7、教学内容和目标明确，符合教学大纲要求</td>
+                <td>10分</td>
+                <td ><div class="slider 2" STYLE="width: 80%"></div></td>
+                <td><input id="score7" class="value" disabled="disabled"></td>
+            </tr>
+            <tr align="center">
+                <td align="left">8、使用普通话，语言表达清楚、简洁、准确、语速适中</td>
+                <td>8分</td>
+                <td ><div class="slider 1" STYLE="width: 80%"></div></td>
+                <td><input id="score8" class="value" disabled="disabled"></td>
+            </tr>
+            <tr align="center">
+                <td align="left">9、PPT制作精良，板书规范，能有效利用各种教学媒体</td>
+                <td>8分</td>
+                <td ><div class="slider 1" STYLE="width: 80%"></div></td>
+                <td><input id="score9" class="value" disabled="disabled"></td>
+            </tr>
+            <tr align="center">
+                <td align="left">10、有先进的教学理念、实用的教学方法，教学设计精心、课堂效果好</td>
+                <td>15分</td>
+                <td ><div class="slider 3" STYLE="width: 80%"></div></td>
+                <td><input id="score10" class="value" disabled="disabled"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="third">
+        <table class="table table-bordered table-striped" align="center">
+            <tr>
+                <td>教师情况:</td>
+                <td >
+                    <div class="radio">
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios" id="inlineCheckbox1" value="1"> 提前5分钟以上进入教师准备
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios" id="inlineCheckbox2" value="2"> 迟到
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios" id="inlineCheckbox3" value="3"> 早退
+                    </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>课堂氛围:</td>
+                <td>
+                    <div class="radio">
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios1" id="inlineCheckbox4" value="1"> 活跃
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios1" id="inlineCheckbox5" value="2"> 沉闷
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios1" id="inlineCheckbox6" value="3"> 轻松
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios1" id="inlineCheckbox7" value="4"> 安静
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios1" id="inlineCheckbox8" value="5"> 其他
+                    </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>学生情况:</td>
+                <td>
+                    <div class="radio">
+                    <label class="radio-inline">
+                        <input type="radio"  name="optionsRadios2" id="inlineCheckbox9" value="1"> 大多数认真听讲
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios2" id="inlineCheckbox10" value="2"> 一半认真听讲
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios2" id="inlineCheckbox11" value="3"> 只有少数人听
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios2" id="inlineCheckbox12" value="4"> 少数玩手机
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios2" id="inlineCheckbox13" value="5"> 部分玩手机
+                    </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>教材情况:</td>
+                <td>
+                    <div class="radio">
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios3" id="inlineCheckbox14" value="1"> 学生手上有正式教材
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios3" id="inlineCheckbox15" value="2"> 学生手上有自编讲义
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios3" id="inlineCheckbox16" value="3"> 学生手上有分发资料
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios3" id="inlineCheckbox17" value="4"> 学生手上有无资料教材
+                    </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>抬头情况:</td>
+                <td>
+                    <div class="radio">
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios4" id="inlineCheckbox18" value="1"> 大多数学生抬头看老师
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios4" id="inlineCheckbox19" value="2"> 半数左右学生抬头看老师
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios4" id="inlineCheckbox20" value="3"> 只有少学生抬头看老师
+                    </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>就座情况:</td>
+                <td>
+                    <div class="radio">
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios5" id="inlineCheckbox21" value="1"> 前三排基本坐满
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios5" id="inlineCheckbox22" value="2"> 前三排座位空余较多
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios5" id="inlineCheckbox23" value="3"> 学生主要选择教室中后部分就座
+                    </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>授课形式:</td>
+                <td>
+                    <div class="radio">
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios6" id="inlineCheckbox24" value="1"> 完全单向教师讲、学生听
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios6" id="inlineCheckbox25" value="2"> 有讨论、提问交流等互动
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadios6" id="inlineCheckbox26" value="3"> 有探究法或其他新教学模式应用
+                    </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="tab-pane fade center" id="fourth">
+        <h4 align="left">总体评价:</h4>
+        <textarea class="form-control" rows="5" id="review"></textarea><br/>
+        <h4 align="left">存在问题/需要改进的地方及具体改进建议/对你的启发(不少于100字):</h4>
+        <textarea class="form-control" rows="5" id="other"></textarea><br/>
+        <button class="btn btn-success center-block" onclick="entry_rev()">提交记录</button>
+        <hr>
+    </div>
+</div>
 </body>
 </html>

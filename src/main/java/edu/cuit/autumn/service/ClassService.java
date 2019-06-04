@@ -20,4 +20,6 @@ public interface ClassService {
 
     Class getClassById(String classId);
 
+    List<Class> getClassFuzzy(String classMajor);
+
 }

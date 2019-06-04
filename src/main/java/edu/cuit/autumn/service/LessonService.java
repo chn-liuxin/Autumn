@@ -18,4 +18,10 @@ public interface LessonService {
 
     void updateLesson(Lesson lesson);
 
+    List<Lesson> getAllLesson();
+
+    List<Lesson> getLessonByIndex(int startIndex, int endIndex);
+
+    Lesson getLessonByLessonId(String lessonId);
+
 }

@@ -13,7 +13,7 @@ public class Lesson {
 
     private Byte subjectEndTime;
 
-    private Byte lessonDay;
+    private String lessonDay;
 
     private String lessonTime;
 
@@ -67,11 +67,11 @@ public class Lesson {
         this.subjectEndTime = subjectEndTime;
     }
 
-    public Byte getLessonDay() {
+    public String getLessonDay() {
         return lessonDay;
     }
 
-    public void setLessonDay(Byte lessonDay) {
+    public void setLessonDay(String lessonDay) {
         this.lessonDay = lessonDay;
     }
 

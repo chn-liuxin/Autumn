@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>主页-TOP</title>
+    <script src="js/jquery-3.4.1.js"></script>
     <!-- 引入Layui的CSS文件和JS文件 -->
     <link rel="stylesheet" href="css/layui.css">
     <script src="js/layui.js"></script>
@@ -16,21 +17,24 @@
             overflow-x: hidden;
             overflow-y: hidden;
         }
-        span{
-			margin-top: 0.5em;
-			margin-left: 0.3em;
+
+        span {
+            margin-top: 0.5em;
+            margin-left: 0.3em;
             font-size: 2.1em;
             display: inline-block;
             vertical-align: middle;
         }
-        span{
+
+        span {
             display: inline-block;
             color: #d2d2d2;
-			font-size: 1.1em;
-			font-weight: normal;
-			margin-bottom:0.75em;
+            font-size: 1.1em;
+            font-weight: normal;
+            margin-bottom: 0.75em;
         }
-        .right-info{
+
+        .right-info {
             display: inline-block;
             float: right;
             margin-top: 1.7%;
@@ -44,14 +48,15 @@
     </script>
 </head>
 <body>
-    <div style="height: 100%;width: 100%;background-color: rgb(34, 36, 42);border: 0px;">
-        <span  style="color: white;font-size:1.91em;">教学督导听课评价管理系统</span>
-        <div class="right-info">
-            <span>欢迎您!</span>
-            <span th:text="${userName}">UserName</span>
-            <button class="btn btn-primary" style="background-color:#64c3c2;margin-left:1em;"  onclick="toLogin()">注销</button>
-        </div>
+<div style="height: 100%;width: 100%;background-color: rgb(34, 36, 42);border: 0px;">
+    <span style="color: white;font-size:1.91em;">教学督导听课评价管理系统</span>
+    <div class="right-info">
+        <span>欢迎您!</span>
+        <span th:text="${userName}">UserName</span>
+        <button class="btn btn-primary" style="background-color:#64c3c2;margin-left:1em;" onclick="toLogin()">注销
+        </button>
     </div>
+</div>
 </div>
 </body>
 </html>

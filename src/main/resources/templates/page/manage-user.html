@@ -17,6 +17,13 @@
             display: table-cell;
             vertical-align: middle;
         }
+        #updateInfo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -300px;
+            margin-top: -300px;
+        }
     </style>
     <script th:inline="javascript">
         function deleteCheck(deleteUserId) {
@@ -29,10 +36,51 @@
         function addUser() {
             parent.document.getElementById('mainIframe').src = "/autumn/AddUser";
         }
+        function updateTeacherInfo(teacherId,teacherIdentity, teacherPosition) {
+            var editFrame = document.getElementById("updateInfo");
+            var updatePosition = document.getElementById("updatePosition");
+            var updateIdentity = document.getElementById("updateIdentity");
+            var updateID = document.getElementById("updateID");
+            if (teacherIdentity == "一级督导") {
+                updateIdentity.value = "1";
+            }
+            else if (teacherIdentity == "督导老师") {
+                updateIdentity.value = "2";
+            }
+            else {
+                updateIdentity.value = "3";
+            }
+            updateID.value = teacherId;
+            updatePosition.value = teacherPosition;
+            editFrame.style.display = 'block';
+        }
+        function closeUpdateTeacherInfo() {
+            var editFrame = document.getElementById("updateInfo");
+            editFrame.style.display = 'none';
+        }
+        function showUserPreviousPage() {
+            var startIndex = document.getElementById("startIndex").innerText;
+            var pageSize = document.getElementById("pageSize");
+            var url = "/autumn/ManageUserPreviousNextPage?startIndex=" + startIndex + "&&pageSize=" + pageSize.value + "&&state=previous";
+            parent.document.getElementById('mainIframe').src = url;
+        }
+        function showUserNextPage() {
+            var startIndex = document.getElementById("startIndex").innerText;
+            var pageSize = document.getElementById("pageSize");
+            var url = "/autumn/ManageUserPreviousNextPage?startIndex=" + startIndex + "&&pageSize=" + pageSize.value + "&&state=next";
+            parent.document.getElementById('mainIframe').src = url;
+        }
+        function showUserPaging() {
+            var pageIndex = document.getElementById("pageIndex");
+            var pageSize = document.getElementById("pageSize");
+            var url = "/autumn/ShowUserPaging?pageIndex=" + pageIndex.value + "&&pageSize=" + pageSize.value;
+            console.log(url);
+            parent.document.getElementById('mainIframe').src = url;
+        }
     </script>
 </head>
 <body>
-<div class="container" align="center">
+<div class="container" align="center" id="manageUser">
     <h1 class="page-header" align="center">用户管理</h1>
     <form action="/autumn/ManageUser">
         <table id="top-panel" class="table table-striped">
@@ -69,6 +117,22 @@
     <div>
         <table class="table table-striped text-right">
             <tr>
+                <td class="text-left">
+                    <button class="btn btn-info" onclick="showUserPreviousPage()">上一页</button>
+                    <button class="btn btn-info" onclick="showUserNextPage()">下一页</button>
+                    <b>&nbsp;&nbsp;到第&nbsp;</b><input id="pageIndex" type="text" style="width: 2.5em;text-align: center"><b>&nbsp;页&nbsp;</b>
+                    <button class="btn btn-success" onclick="showUserPaging()">确定</button>
+                    <b>&nbsp;&nbsp;第</b>
+                    <span id="startIndex" th:text="${currentPage}" style="font-weight: bold">1</span>
+                    <b>/</b>
+                    <span id="endIndex" th:text="${totalPage}" style="font-weight: bold">1</span>
+                    <b>页&nbsp;</b>
+                    <select id="pageSize" class="input-sm">
+                        <option value="5">5条/页</option>
+                        <option value="10">10条/页</option>
+                        <option value="20">20条/页</option>
+                    </select>
+                </td>
                 <td>
                     <button data-method="select" onclick="addUser()" type="button" class="btn btn-primary">添加用户</button>
                 <td>
@@ -96,102 +160,49 @@
                 <td th:text="${teacher.teacherPhone}">TeacherName</td>
                 <td th:text="${teacher.teacherPosition}">TeacherPosition</td>
                 <td>
-                    <button data-method="select" type="button" class="btn btn-success">编辑</button>
+                    <button th:onclick="javascript:updateTeacherInfo([[${teacher.teacherId}]],[[${identityMap.get(userMap.get(teacher.userId).userIdentity)}]],[[${teacher.teacherPosition}]]);" data-method="select" type="button" class="btn btn-success">编辑</button>
                     <button th:onclick="javascript:deleteCheck([[${teacher.userId}]]);" data-method="more" type="submit" class="btn btn-danger">删除</button>
                 </td>
             </tr>
         </table>
     </div>
+
+    <!-- 管理员更新老师信息(Identity、Position) -->
+    <div id="updateInfo" class="modal-dialog" align="center" style="display: none">
+        <div  class="modal-content" style="width:400px;">
+            <div class="modal-header" >
+                <h4 class="text-center text-primary">编辑信息</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/autumn/UpdateInfo" method="post" class="form col-md-12 center-block">
+                    <div class="form-group">
+                        <p class="text-left">老师ID(不可修改)</p>
+                        <input type="text" id="updateID" name="teacherId" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <p class="text-left">编辑身份</p>
+                        <select id="updateIdentity" name="teacherIdentity" class="form-control">
+                            <option value="3">普通老师</option>
+                            <option value="2">普通督导</option>
+                            <option value="1">一级督导</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <p class="text-left">编辑职位</p>
+                        <input type="text" id="updatePosition" name="teacherPosition" class="form-control" placeholder="老师职位">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">修改信息</button>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger btn-lg btn-block" onclick="closeUpdateTeacherInfo()">取消编辑</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+
 </div>
-
-<script src="layui.js" charset="utf-8"></script>
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-
-<script>
-    layui.config({
-        version: '1554901097999' //为了更新 js 缓存，可忽略
-    });
-
-    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function () {
-        var laydate = layui.laydate //日期
-            , laypage = layui.laypage //分页
-            , layer = layui.layer //弹层
-            , table = layui.table //表格
-            , element = layui.element //元素操作
-
-
-        //执行一个 table 实例
-        table.render({
-            elem: '#demo'
-            , height: 420
-            , url: '/demo/table/user/' //数据接口
-            , title: '用户表'
-            , page: true //开启分页
-            , toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
-            , totalRow: true //开启合计行
-            , cols: [
-                [ //表头
-                    {type: 'checkbox', fixed: 'left'}
-                    , {field: 'id', title: '用户ID', width: 100, sort: true, fixed: 'left', totalRowText: '合计：'}
-                    , {field: 'username', title: '用户名', width: 130}
-                    , {field: 'teacher', title: '老师名', width: 100, totalRow: true}
-                    , {field: 'identity', title: '用户身份', width: 130}
-                    , {field: 'sex', title: '性别', width: 80, totalRow: true}
-                    , {field: 'birth', title: '生日', width: 150, sort: true}
-                    , {field: 'position', title: '职位', width: 100}
-                    , {field: 'phone', title: '电话', width: 150}
-                    , {fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo'}
-                ]
-            ]
-        });
-
-        //监听头工具栏事件
-        table.on('toolbar(test)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id)
-                , data = checkStatus.data; //获取选中的数据
-            switch (obj.event) {
-                case 'add':
-                    layer.msg('添加');
-                    break;
-                case 'update':
-                    if (data.length === 0) {
-                        layer.msg('请选择一行');
-                    } else if (data.length > 1) {
-                        layer.msg('只能同时编辑一个');
-                    } else {
-                        layer.alert('编辑 [id]：' + checkStatus.data[0].id);
-                    }
-                    break;
-                case 'delete':
-                    if (data.length === 0) {
-                        layer.msg('请选择一行');
-                    } else {
-                        layer.msg('删除');
-                    }
-                    break;
-            }
-            ;
-        });
-
-        //监听行工具事件
-        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-            var data = obj.data //获得当前行数据
-                , layEvent = obj.event; //获得 lay-event 对应的值
-            if (layEvent === 'detail') {
-                layer.msg('查看操作');
-            } else if (layEvent === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del(); //删除对应行（tr）的DOM结构
-                    layer.close(index);
-                    //向服务端发送删除指令
-                });
-            } else if (layEvent === 'edit') {
-                layer.msg('编辑操作');
-            }
-        });
-
-    });
-</script>
-
 </body>
 </html>

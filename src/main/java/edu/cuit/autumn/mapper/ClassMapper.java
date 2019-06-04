@@ -57,4 +57,11 @@ public interface ClassMapper {
     @Update("update class set class_session=#{classSession},class_major=#{classMajor},class_number=#{classNumber} where class_id=#{classId}")
     void updateClass(Class aClass);
 
+
+    /**
+     * 模糊搜索
+     */
+    @Select("select * from class where class_major like #{classMajor}")
+    List<Class> getClassFuzzy(String classMajor);
+
 }

@@ -1,5 +1,7 @@
 package edu.cuit.autumn.entity;
 
+import java.util.Date;
+
 public class Record {
     private String recordId;
 
@@ -11,9 +13,17 @@ public class Record {
 
     private String lessonId;
 
-    private Byte status;
+    private Date datetime;
 
-    private Boolean isComplete;
+    private int isHandle;
+
+    private int status;
+
+    private int reviewType;
+
+    private String reviewId;
+
+    private boolean isDelete;
 
     public String getRecordId() {
         return recordId;
@@ -36,7 +46,7 @@ public class Record {
     }
 
     public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId == null ? null : teacherId.trim();
+        this.teacherId = teacherId;
     }
 
     public String getReviewTeacherId() {
@@ -44,7 +54,7 @@ public class Record {
     }
 
     public void setReviewTeacherId(String reviewTeacherId) {
-        this.reviewTeacherId = reviewTeacherId == null ? null : reviewTeacherId.trim();
+        this.reviewTeacherId = reviewTeacherId;
     }
 
     public String getLessonId() {
@@ -52,22 +62,59 @@ public class Record {
     }
 
     public void setLessonId(String lessonId) {
-        this.lessonId = lessonId == null ? null : lessonId.trim();
+        this.lessonId = lessonId;
     }
 
-    public Byte getStatus() {
+    public Date getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(Date datetime) {
+        this.datetime = datetime;
+    }
+
+    public int getIsHandle() {
+        return isHandle;
+    }
+
+    public void setIsHandle(int isHandle) {
+        this.isHandle = isHandle;
+    }
+
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Boolean getIsComplete() {
-        return isComplete;
+    public int getReviewType() {
+        return reviewType;
     }
 
-    public void setIsComplete(Boolean isComplete) {
-        this.isComplete = isComplete;
+    public void setReviewType(int reviewType) {
+        this.reviewType = reviewType;
+    }
+
+    public String reviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(String reviewId) {
+        this.reviewId = reviewId;
+    }
+
+    public boolean getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(boolean isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    @Override
+    public String toString() {
+        return lessonId;
     }
 }

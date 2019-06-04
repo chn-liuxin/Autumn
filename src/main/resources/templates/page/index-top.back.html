@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>主页-TOP</title>
+    <script src="js/jquery-3.4.1.js"></script>
     <!-- 引入Layui的CSS文件和JS文件 -->
     <link rel="stylesheet" href="css/layui.css">
     <script src="js/layui.js"></script>
@@ -16,16 +17,19 @@
             overflow-x: hidden;
             overflow-y: hidden;
         }
-        span{
+
+        span {
             font-size: 2.6em;
             display: inline-block;
             vertical-align: middle;
         }
-        b{
+
+        b {
             display: inline-block;
             color: white;
         }
-        .right-info{
+
+        .right-info {
             display: inline-block;
             float: right;
             margin-top: 1.7%;
@@ -39,14 +43,14 @@
     </script>
 </head>
 <body>
-    <div style="height: 100%;width: 100%;background-color: black;border: 0px;">
-        <span style="font-family: 华文行楷;color: white;">教学督导听课评价管理系统</span>
-        <div class="right-info">
-            <b>欢迎您:</b>
-            <b th:text="${userName}">UserName</b>
-            <button class="btn btn-info btn-xs" onclick="toLogin()">注销</button>
-        </div>
+<div style="height: 100%;width: 100%;background-color: black;border: 0px;">
+    <span style="font-family: 华文行楷;color: white;">教学督导听课评价管理系统</span>
+    <div class="right-info">
+        <b>欢迎您:</b>
+        <b th:text="${userName}">UserName</b>
+        <button class="btn btn-info btn-xs" onclick="toLogin()">注销</button>
     </div>
+</div>
 </div>
 </body>
 </html>

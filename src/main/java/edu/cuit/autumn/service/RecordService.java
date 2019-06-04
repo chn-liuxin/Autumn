@@ -12,7 +12,11 @@ public interface RecordService {
 
     List<Record> getRecordByReviewTeacherId(String reviewTeacherId);
 
-    void insertRecord(Record record);
+    void entryReview(String recordId, String reviewType, String reviewId);
 
-    void updateRecordToComplete(String recordId);
+    void toDelete(String recordId);
+
+    void changeStatus(String recordId, byte stute);
+
+    void insertRecord(Record record);
 }

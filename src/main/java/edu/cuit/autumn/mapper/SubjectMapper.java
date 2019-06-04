@@ -1,14 +1,13 @@
 package edu.cuit.autumn.mapper;
 
 import edu.cuit.autumn.entity.Subject;
-
-import java.util.List;
-
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface SubjectMapper {
@@ -30,5 +29,11 @@ public interface SubjectMapper {
 
     @Update("update subject set subject_name=#{subjectName},subject_credit=#{subjectCredit},subject_hour=#{subjectHour},subject_type=#{subjectType},subject_start_time=#{subjectStartTime},subject_end_time=#{subjectEndTime} where subject_id=#{subjectId}")
     void updateSubject(Subject subject);
+
+    @Select("select * from subject where subject_name like #{subjectName}")
+    List<Subject> getSubjectFuzzy(String subjectName);
+
+    @Select("select * from subject where subject_name=#{subjectname}")
+    Subject getSubjectByName(String subjectName);
 
 }

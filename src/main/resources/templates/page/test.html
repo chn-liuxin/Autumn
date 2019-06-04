@@ -1,22 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>评分组件</title>
-  <link rel="stylesheet" href="css/layui.css">
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link rel="stylesheet" href="css/slide.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/slide.js"></script>
+    <style type="text/css">
+        #teacherList {
+            position: absolute;
+            width: 20em;
+            background-color: #fff;
+            border: 1px solid #999;
+            border-radius: 5px;
+            margin-left: 44%;
+        }
+        #teacherList ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        #teacherList ul li {
+            padding: 3px;
+            line-height: 1.2em;
+        }
+        #teacherList ul li:hover {
+            background-color: #e5e5e5;
+        }
+    </style>
+    <script type="text/javascript">
+        function searchTeacher() {
+            var key = document.getElementById("teacherName").value;
+            document.getElementById("teacherList").style.display = "block";
+            $.ajax({
+                traditional: true,
+                type: "post",
+                dataType: "text",
+                url: "/autumn/TestJson",
+                data: {
+                    teacherName: key,
+                },
+                success: function (result) {
+                    var result = JSON.parse(result);
+                    var resultData = result.data;
+                    console.log(result.status);
+                    console.log(result.msg);
+                    console.log(resultData.userId);
+                    console.log(resultData.userName);
+                }
+            })
+        }
+        function closeTeacherList() {
+            document.getElementById("teacherList").style.display = 'none';
+        }
+    </script>
 </head>
 <body>
-  <div id="test1"></div>
-  <script src="js/layui.js"></script>
-  <script>
-  layui.use('rate', function(){
-    var rate = layui.rate;
-   
-    //渲染
-    var ins1 = rate.render({
-      elem: '#test1'  //绑定元素
-    });
-  });
-  </script>
+    <table class="table" align="center">
+        <tr>
+            <td>
+                <input type="text" name="teacherName" class="form-control" id="teacherName" oninput="searchTeacher()" autocomplete="off" onblur="closeTeacherList()">
+            </td>
+        </tr>
+    </table>
+    <div id="teacherList" style="display: none">
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
 </body>
 </html>

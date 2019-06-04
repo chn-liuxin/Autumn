@@ -53,4 +53,19 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher getTeacherById(String teacherId) {
         return teacherMapper.getTeacherById(teacherId);
     }
+    @Override
+    public List<Teacher> getTeacherFuzzy(String teacherName){
+        teacherName = new StringBuilder("%").append(teacherName).append("%").toString();
+        return teacherMapper.getTeacherFuzzy(teacherName);
+    }
+
+    @Override
+    public int getTeacherCount() {
+        return teacherMapper.getTeacherCount();
+    }
+
+    @Override
+    public List<Teacher> getTeacherByIndex(int startIndex, int endIndex) {
+        return teacherMapper.getTeacherByIndex(startIndex, endIndex);
+    }
 }

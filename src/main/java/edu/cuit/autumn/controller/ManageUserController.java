@@ -22,6 +22,33 @@ public class ManageUserController {
     TeacherServiceImpl teacherService;
     User user;
     Teacher teacher;
+    List<Teacher> teachers;
+    Map<String, User> userMap = new HashMap<>();
+    Map<Short, String> identityMap = new HashMap<>();
+
+    public void initIdentityMap() {
+        // 身份标识
+        identityMap.put((short)1, "一级督导");
+        identityMap.put((short)2, "普通督导");
+        identityMap.put((short)3, "普通老师");
+    }
+
+    public void findUser(List<Teacher> teachers, Map<String, User> userMap) {
+        for (Teacher teacher: teachers) {
+            user = userService.getUserById(teacher.getUserId());
+            if (user != null) {
+                userMap.put(teacher.getUserId(), user);
+            }
+        }
+    }
+
+    public void addModel(Model model, List<Teacher> teachers, Map<String, User> userMap, Map<Short, String> identityMap, int currentPage, int totalPage) {
+        model.addAttribute("teachers", teachers);
+        model.addAttribute("userMap", userMap);
+        model.addAttribute("identityMap", identityMap);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPage", totalPage);
+    }
 
     /**
      * 用户管理模块主页
@@ -31,14 +58,9 @@ public class ManageUserController {
      */
     @RequestMapping("/ManageUser")
     public String manageUser(Model model, HttpServletRequest request) {
-        // 数据定义
-        List<Teacher> teachers;
-        Map<String, User> userMap = new HashMap<>();
-        Map<Short, String> identityMap = new HashMap<>();
-        identityMap.put((short)1, "一级督导");
-        identityMap.put((short)2, "普通督导");
-        identityMap.put((short)3, "普通老师");
-
+        initIdentityMap();
+        int pageSize = 5;
+        int pageCount;
         // 查询老师功能
         if (request.getParameter("teacherName") != null) {
             String teacherName = request.getParameter("teacherName");
@@ -53,6 +75,7 @@ public class ManageUserController {
                     }
                 }
             }
+            pageCount = teachers.size() / pageSize + 1;
         }
         // 删除用户功能
         else if(request.getParameter("deleteUserId") != null) {
@@ -61,11 +84,11 @@ public class ManageUserController {
             teacher = teacherService.getTeacherByUserId(user);
             teacherService.deleteTeacher(teacher.getTeacherId());
             userService.deleteUser(user.getUserId());
-            teachers = teacherService.getAllTeacher();
+            teachers = teacherService.getTeacherByIndex(0, 5);
         }
         // 普通显示用户功能
         else {
-            teachers = teacherService.getAllTeacher();
+            teachers = teacherService.getTeacherByIndex(0, 5);
         }
         for (Teacher teacher: teachers) {
             user = userService.getUserById(teacher.getUserId());
@@ -73,9 +96,8 @@ public class ManageUserController {
                 userMap.put(teacher.getUserId(), user);
             }
         }
-        model.addAttribute("teachers", teachers);
-        model.addAttribute("userMap", userMap);
-        model.addAttribute("identityMap", identityMap);
+        pageCount = teacherService.getTeacherCount() > 0 ? (teacherService.getTeacherCount() - 1) / pageSize + 1 : 1;
+        addModel(model, teachers, userMap, identityMap, 1, pageCount);
         return "/page/manage-user";
     }
 
@@ -92,7 +114,7 @@ public class ManageUserController {
      * 添加老师
      * @return
      */
-    @RequestMapping("AddTeacher")
+    @RequestMapping("/AddTeacher")
     public String addTeacher(Model model, HttpServletRequest request) {
         user = new User();
         teacher = new Teacher();
@@ -100,6 +122,9 @@ public class ManageUserController {
         String teacherId = AutoID.getAutoID();
         String userId = AutoID.getAutoID();
         String userName = request.getParameter("teacherName").trim();
+        if (request.getParameter("teacherName").trim().length() == 0) {
+            return "/page/manage-user";
+        }
         String teacherBirthday = request.getParameter("teacherBirthday").trim();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -132,6 +157,73 @@ public class ManageUserController {
         model.addAttribute("user", user);
         model.addAttribute("teacher", teacher);
         return "/page/add-user-remind";
+    }
+
+    /**
+     * 管理员修改老师信息(身份、职位)
+     */
+    @RequestMapping("UpdateInfo")
+    public String updateTeacherInfo(HttpServletRequest request) {
+        user = new User();
+        teacher = new Teacher();
+        String teacherId = request.getParameter("teacherId");
+        String teacherIdentity = request.getParameter("teacherIdentity");
+        String teacherPosition = request.getParameter("teacherPosition");
+        teacher.setTeacherId(teacherId);
+        teacher = teacherService.getTeacherById(teacherId);
+        if (teacher != null) {
+            user = userService.getUserById(teacher.getUserId());
+            teacher.setTeacherPosition(teacherPosition);
+            user.setUserIdentity(Short.parseShort(teacherIdentity));
+            teacherService.updateTeacher(teacher);
+            userService.updateUser(user);
+        }
+        return "/page/manage-user";
+    }
+
+    /**
+     * 自定义分页显示用户
+     */
+    @RequestMapping("ShowUserPaging")
+    public String showUserPaging(HttpServletRequest request, Model model) {
+        initIdentityMap();
+        int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
+        int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+        int teacherCount = teacherService.getTeacherCount();
+        int pageCount = teacherCount / pageSize + 1;
+        if (pageIndex > pageCount) {
+            pageIndex = pageCount;
+            teachers = teacherService.getTeacherByIndex((pageCount - 1) * pageSize, pageSize);
+        }
+        else {
+            teachers = teacherService.getTeacherByIndex((pageIndex - 1) * pageSize, pageSize);
+        }
+        findUser(teachers, userMap);
+        addModel(model, teachers, userMap, identityMap, pageIndex, pageCount);
+        return "/page/manage-user";
+    }
+
+    /**
+     * 上一页/下一页显示用户
+     */
+    @RequestMapping("ManageUserPreviousNextPage")
+    public String manageUserPreviousNextPage(HttpServletRequest request, Model model) {
+        initIdentityMap();
+        int currentPage = 1;
+        String state = request.getParameter("state");
+        int startIndex = Integer.parseInt(request.getParameter("startIndex"));
+        int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+        int pageCount = teacherService.getTeacherCount() / pageSize + 1;
+        if (state.equals("previous")) {
+            currentPage = startIndex > 1 ?  startIndex - 1 : startIndex;
+        }
+        else if (state.equals("next")) {
+            currentPage = startIndex >= pageCount ? pageCount : startIndex + 1;
+        }
+        teachers = teacherService.getTeacherByIndex((currentPage - 1) * pageSize, pageSize);
+        findUser(teachers, userMap);
+        addModel(model, teachers, userMap, identityMap,currentPage, pageCount);
+        return "/page/manage-user";
     }
 
 }

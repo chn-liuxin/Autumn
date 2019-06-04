@@ -166,6 +166,13 @@ create table user
    primary key (user_id)
 );
 
+create table visitor
+(
+    type   varchar(10) not null,
+   number    int not null,
+   primary key (type)
+);
+
 alter table lesson add constraint FK_Reference_2 foreign key (class_id)
       references class (class_id) on delete restrict on update restrict;
 

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
-    <title>主页-TOP</title>
+    <title>个人信息</title>
     <!-- 引入Layui的CSS文件和JS文件 -->
     <link rel="stylesheet" href="css/layui.css">
     <script src="js/layui.js"></script>
@@ -12,10 +12,65 @@
     <style type="text/css">
         html,body {
             height: 100%;
+            background-color: #f7f7f7;
         }
+        .firstInfo li{
+            text-align:left;
+            margin-top: 18px;
+            margin-left: 5em;
+            font-size:18px;
+            font-weight:500;
+            letter-spacing: 3px;
+            color:#71709e;
+        }
+        .secondInfo li{
+            text-align:left;
+            margin-top: 23px;
+            font-size:18px;
+            font-weight:500;
+            letter-spacing: 3px;
+            color:#71709e;
+        }
+        .container{
+            background-color: #e9e9e9;
+        }
+
+
     </style>
+    <script th:inline="javascript">
+        function manageInfo() {
+            var url = "/autumn/ManageInformation?userName=" + [[${user.userName}]];
+            parent.document.getElementById('mainIframe').src = url;
+        }
+    </script>
 </head>
 <body scroll="no">
-    <h1>hello this is my information.</h1>
+<h1 class="page-header" align="center" style="border-bottom-color: #71709e;color:#71709e;border-bottom-width: 2px">个人信息</h1>
+<div class="container" align="center">
+    <div class="col-md-8 ">
+        <ul class="firstInfo">
+            <li><img src="images/head.jpg" class="img-circle head-portrit" style="width:10em;border: #f1f1f1 3px solid"></li>
+            <li>用户名: <span th:text = "${user.userName}"></span></li>
+            <li>用户ID: <span th:text = "${user.userId}"></span></li>
+            <li>教师ID: <span th:text = "${teacher.teacherId}"></span></li>
+        </ul>
+    </div>
+    <ul class="secondInfo">
+        <li>姓名: <span th:text = "${teacher.teacherName}"></span></li>
+        <li>身份: <span th:text = "${identityMap.get(user.userIdentity)}"></span></li>
+        <li>性别: <span th:text = "${teacher.teacherSex}"></span></li>
+        <li>生日: <span th:text = "${#dates.format(teacher.teacherBirthday, 'yyyy-MM-dd')}"></span></li>
+        <li>职位: <span th:text = "${teacher.teacherPosition}"></span></li>
+        <li>电话: <span th:text = "${teacher.teacherPhone}"></span></li>
+    </ul>
+
+    <table class="table text-right">
+        <tr>
+            <td>
+                <button  onclick="manageInfo()" type="button" class="btn btn-primary">修改信息</button>
+            <td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

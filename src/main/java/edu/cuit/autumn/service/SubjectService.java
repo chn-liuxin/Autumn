@@ -18,4 +18,7 @@ public interface SubjectService {
 
     Subject getSubjectById(String subjectId);
 
+    List<Subject> getSubjectFuzzy(String subjectName);
+
+    Subject getSubjectByName(String subjectName);
 }

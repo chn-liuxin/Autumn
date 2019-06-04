@@ -43,4 +43,15 @@ public class SubjectServiceImpl implements SubjectService {
     public Subject getSubjectById(String subjectId) {
         return subjectMapper.getSubjectById(subjectId);
     }
+
+    @Override
+    public List<Subject> getSubjectFuzzy(String subjectName){
+        subjectName = new StringBuilder("%").append(subjectName).append("%").toString();
+        return subjectMapper.getSubjectFuzzy(subjectName);
+    }
+
+    @Override
+    public Subject getSubjectByName(String subjectName) {
+        return subjectMapper.getSubjectByName(subjectName);
+    }
 }

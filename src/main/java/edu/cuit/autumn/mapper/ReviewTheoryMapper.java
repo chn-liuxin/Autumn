@@ -39,6 +39,7 @@ public interface ReviewTheoryMapper {
     /**
      * 增加一条听课记录
      */
-    @Insert("insert into review_theory values(#{reviewId},#{teacherId},#{reviewTeacherId},#{classId},#{subjectId},#{lessonId},#{theme},#{reviewDate},#{reviewTime},#{score1},#{score2},#{score3},#{score4},#{score5},#{score6},#{score7},#{score8},#{score9},#{score10},#{totalScore},#{teacherSituation},#{atmosphere},#{studentSituation},#{bookSituation},#{headRate},#{sitSituation},#{teachType},#{overallEvaluation},#{recommend})")
+    @Insert("insert into review_theory values(#{reviewId},#{teacherId},#{reviewTeacherId},#{classId},#{subjectId},#{classroom},#{theme},#{reviewDate},#{reviewTime},#{score1},#{score2},#{score3},#{score4},#{score5},#{score6},#{score7},#{score8},#{score9},#{score10},#{totalScore},#{teacherSituation},#{atmosphere},#{studentSituation},#{bookSituation},#{headRate},#{sitSituation},#{teachType},#{overallEvaluation},#{recommend})")
     void insertReviewTheory(ReviewTheory reviewTheory);
+
 }

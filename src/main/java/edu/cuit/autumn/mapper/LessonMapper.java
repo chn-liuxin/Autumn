@@ -1,16 +1,12 @@
 package edu.cuit.autumn.mapper;
 
 import edu.cuit.autumn.entity.Lesson;
-
-import java.util.List;
-
 import edu.cuit.autumn.entity.Subject;
 import edu.cuit.autumn.entity.Teacher;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface LessonMapper {
@@ -29,5 +25,14 @@ public interface LessonMapper {
 
     @Update("update lesson set subject_id=#{subjectId},teacher_id=#{teacherId},class_id=#{classId},subject_start_time=#{subjectStartTime},subject_end_time=#{subjectEndTime},lesson_day=#{lessonDay},lesson_time=#{lessonTime},lesson_room=#{lessonRoom} where lesson_id=#{lessonId}")
     void updateLesson(Lesson lesson);
+
+    @Select("select * from lesson")
+    List<Lesson> getAllLesson();
+
+    @Select("select * from lesson limit #{startIndex},#{endIndex}")
+    List<Lesson> getLessonByIndex(@Param("startIndex") int startIndex, @Param("endIndex") int endIndex);
+
+    @Select("select * from lesson where lesson_id=#{lessonId}")
+    Lesson getLessonByLessonId(String lessonId);
 
 }

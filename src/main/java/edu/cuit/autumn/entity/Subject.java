@@ -1,18 +1,26 @@
 package edu.cuit.autumn.entity;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Subject {
+    @XmlAttribute
     private String subjectId;
-
+    @XmlAttribute
     private String subjectName;
-
+    @XmlAttribute
     private Float subjectCredit;
-
+    @XmlAttribute
     private Byte subjectHour;
-
+    @XmlAttribute
     private String subjectType;
-
+    @XmlAttribute
     private Byte subjectStartTime;
-
+    @XmlAttribute
     private Byte subjectEndTime;
 
     public String getSubjectId() {

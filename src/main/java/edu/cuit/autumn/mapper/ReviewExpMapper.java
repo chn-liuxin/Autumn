@@ -39,6 +39,6 @@ public interface ReviewExpMapper {
     /**
      * 增加一条听课记录
      */
-    @Insert("insert into review_exp values(#{reviewId},#{teacherId},#{reviewTeacherId},#{classId},#{subjectId},#{lessonId},#{theme},#{reviewDate},#{reviewTime},#{score1},#{score2},#{score3},#{score4},#{score5},#{score6},#{score7},#{score8},#{totalScore},#{comment},#{management},#{type})")
+    @Insert("insert into review_exp values(#{reviewId},#{teacherId},#{reviewTeacherId},#{classId},#{subjectId},#{classroom},#{theme},#{reviewDate},#{reviewTime},#{score1},#{score2},#{score3},#{score4},#{score5},#{score6},#{score7},#{score8},#{totalScore},#{comment},#{management},#{type})")
     void insertReviewTheory(ReviewExp reviewExp);
 }

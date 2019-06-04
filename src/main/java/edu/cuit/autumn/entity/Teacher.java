@@ -1,20 +1,23 @@
 package edu.cuit.autumn.entity;
 
+import javax.xml.bind.annotation.*;
 import java.util.Date;
-
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Teacher {
+    @XmlAttribute
     private String teacherId;
-
+    @XmlAttribute
     private String userId;
-
+    @XmlAttribute
     private String teacherName;
-
+    @XmlAttribute
     private String teacherSex;
-
+    @XmlAttribute
     private Date teacherBirthday;
-
+    @XmlAttribute
     private String teacherPosition;
-
+    @XmlAttribute
     private String teacherPhone;
 
     public String getTeacherId() {

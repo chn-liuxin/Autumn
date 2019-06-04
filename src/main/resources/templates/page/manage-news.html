@@ -1,128 +1,134 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8">
-  <title>消息管理</title>
-  <!-- 引入Layui的CSS文件和JS文件 -->
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="css/layui.css" media="all">
-  <script src="layui.js"></script> 
-  <!-- 引入Bootstrap的CSS文件和JS文件 -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <script src="js/bootstrap.min.js"></script>
+    <meta charset="utf-8">
+    <title>消息管理</title>
+    <script src="js/jquery.min.js"></script>
+    <!-- 引入Layui的CSS文件和JS文件 -->
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="css/layui.css" media="all">
+    <script src="js/layui.js"></script>
+    <!-- 引入Bootstrap的CSS文件和JS文件 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <script th:inline="javascript">
+        function toAgree(recordId) {
+            ajax("agree",recordId);
+            window.location.reload(true);
+        }
+        function toRefuse(recordId) {
+            ajax("refuse",recordId);
+            window.location.reload(true);
+        }
+        function toDelete(recordId) {
+            ajax("delete",recordId);
+            window.location.reload(true);
+        }
+        function ajax(key,recordId) {
+            var url="/autumn/SupervisionRecord"
+            var xhr = new XMLHttpRequest();
+            xhr.open('post',url, false);
+            xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xhr.send("type="+key+"&recordId="+recordId);
+            xhr.onreadystatechange = function () {
+                // 这步为判断服务器是否正确响应
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                }
+            };
+        }
+    </script>
 </head>
 <body>
-<div class="container"  align="center">
-	<h1 class="page-header" align="center">消息管理</h1>
-	<h3 align="left" style="color:rgb(78, 205, 196);">待处理</h3>
-	<div class="col-md-12">
-		<table class="table table-condensed">
-			<tr>
-				<td>2019-05-16 9:42 am</td>
-				<td>郑丰华请求听课:周四5-6节 JAVAEE</td>
-				<td><button type="button" class="btn btn-success">接受</button> <button type="button" class="btn btn-danger">拒绝</button></td>
-			</tr>
-			<tr>
-				<td>2019-05-15 9:42 am</td>
-				<td>郑丰华请求听课:周四5-6节 JAVAEE</td>
-				<td><button type="button" class="btn btn-success">接受</button> <button type="button" class="btn btn-danger">拒绝</button></td>
-			</tr>
-			<tr>
-				<td>2019-05-14 9:42 am</td>
-				<td>你的听课请求被拒绝！:周四5-6节 JAVAEE</td>
-				<td><button type="button" class="btn btn-primary">再次申请</button> <button type="button" class="btn btn-warning">取消</button></td>
-			</tr>
-			<tr>
-				<td>2019-05-13 9:42 am</td>
-				<td>你的听课请求已通过！:周四5-6节 JAVAEE</td>
-				<td><button type="button" class="btn btn-primary">已读</button></td>
-			</tr>
-		</table>
-	</div>
-	<h3 align="left" style="color:rgb(120,120,120);">历史记录</h3>
-	<div class="col-md-12">
-		<table class="table table-condensed" style="font-size:15px;color:#696969">
-			<tr>
-				<td>2019-05-16 9:42 am</td>
-				<td>你已拒绝郑丰华的听课请求:周四5-6节 JAVAEE</td>
-				<td><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
-			</tr>
-			<tr>
-				<td>2019-05-15 9:42 am</td>
-				<td>你已接受郑丰华的听课请求:周四5-6节 JAVAEE</td>
-				<td><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
-			</tr>
-			<tr>
-				<td>2019-05-14 9:42 am</td>
-				<td>你的听课请求被拒绝！:周四5-6节 JAVAEE</td>
-				<td><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
-			</tr>
-			<tr>
-				<td>2019-05-13 9:42 am</td>
-				<td>你的听课请求已通过！:周四5-6节 JAVAEE</td>
-				<td><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
-			</tr>
-		</table>
-	</div>
+<div class="container" align="center">
+    <h1 class="page-header" align="center">消息管理</h1>
+    <h3 align="left" style="color:rgb(78, 205, 196);">待处理</h3>
+    <div>
+        <table class="table table-condensed table-striped">
+            <tr th:each="teaSubRecLes:${review}">
+                <div th:if="${teaSubRecLes.record.isHandle} eq 0">
+                    <div th:if="${teaSubRecLes.record.type} eq 1">
+                        <td th:text="${#dates.format(teaSubRecLes.record.datetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td>听课安排</td>
+                        <td><span>周</span><span th:text="${teaSubRecLes.lesson.lessonDay}"></span><span
+                                th:text="${teaSubRecLes.lesson.lessonTime}"></span><span>节</span></td>
+                        <td><span th:text="${teaSubRecLes.teacher.teacherName}"></span><span>老师</span><span
+                                th:text="${teaSubRecLes.subject.subjectName}"></span></td>
+                        <td>进行中</td>
+                    </div>
+                    <div th:if="${teaSubRecLes.record.type} eq 0">
+                        <td th:text="${#dates.format(teaSubRecLes.record.datetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td><span>我想听课</span></td>
+                        <td><span>周</span><span th:text="${teaSubRecLes.lesson.lessonDay}"></span><span
+                                th:text="${teaSubRecLes.lesson.lessonTime}"></span><span>节</span></td>
+                        <td><span th:text="${teaSubRecLes.teacher.teacherName}"></span><span>老师</span><span
+                                th:text="${teaSubRecLes.subject.subjectName}"></span></td>
+                        <td>申请中</td>
+                    </div>
+                </div>
+            </tr>
+            <tr th:each="teaSubRecLes:${teach}">
+                <div th:if="${teaSubRecLes.record.isHandle} eq 0">
+                    <td th:text="${#dates.format(teaSubRecLes.record.datetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td><span th:text="${teaSubRecLes.teacher.teacherName}"></span><span>想听我的课</span></td>
+                    <td><span>周</span><span th:text="${teaSubRecLes.lesson.lessonDay}"></span><span
+                            th:text="${teaSubRecLes.lesson.lessonTime}"></span><span>节</span></td>
+                    <td><span th:text="${teaSubRecLes.subject.subjectName}"></span></td>
+                    <td> <button class="btn btn-success" th:onclick="javascript:toAgree([[${teaSubRecLes.record.recordId}]]);">通过</button><button class="btn btn-danger" th:onclick="javascript:toRefuse([[${teaSubRecLes.record.recordId}]]);">拒绝</button></td>
+                </div>
+            </tr>
+        </table>
+    </div>
+    <h3 align="left" style="color:rgb(120,120,120);">历史记录</h3>
+    <div class="col-md-12">
+        <table class="table table-condensed table-striped" style="font-size:15px;color:#696969">
+            <tr th:each="teaSubRecLes:${review}">
+                <div th:if="${teaSubRecLes.record.isHandle} eq 1">
+                    <div th:if="${teaSubRecLes.record.type} eq 0">
+                        <td><span
+                                th:text="${#dates.format(teaSubRecLes.record.datetime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </td>
+                        <td th:if="${teaSubRecLes.record.status} eq 2">我的申请通过</td>
+                        <td th:if="${teaSubRecLes.record.status} eq 3">我的申请被拒</td>
+                        <td><span>周</span><span th:text="${teaSubRecLes.lesson.lessonDay}"></span><span
+                                th:text="${teaSubRecLes.lesson.lessonTime}"></span><span>节</span></td>
+                        <td><span th:text="${teaSubRecLes.teacher.teacherName}"></span><span>老师</span><span
+                                th:text="${teaSubRecLes.subject.subjectName}"></span></td>
+                        <td><button type="button" class="btn btn-danger" th:onclick="javascript:toDelete([[${teaSubRecLes.record.recordId}]]);"><span class="glyphicon glyphicon-trash"
+                                                                               aria-hidden="true"></span></button></td>
+                    </div>
+                    <div th:if="${teaSubRecLes.record.type} eq 1">
+                        <td><span
+                                th:text="${#dates.format(teaSubRecLes.record.datetime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </td>
+                        <td th:if="${teaSubRecLes.record.reviewType ne 1}">听课完成</td>
+                        <td><span>周</span><span th:text="${teaSubRecLes.lesson.lessonDay}"></span><span
+                                th:text="${teaSubRecLes.lesson.lessonTime}"></span><span>节</span></td>
+                        <td><span th:text="${teaSubRecLes.teacher.teacherName}"></span><span>老师</span><span
+                                th:text="${teaSubRecLes.subject.subjectName}"></span></td>
+                        <td><button type="button" class="btn btn-danger" th:onclick="javascript:toDelete([[${teaSubRecLes.record.recordId}]]);"><span class="glyphicon glyphicon-trash"
+                                                                               aria-hidden="true"></span></button></td>
+                    </div>
+                </div>
+            </tr>
+            <tr th:each="teaSubRecLes:${teach}">
+                <div th:if="${teaSubRecLes.record.status} eq 2">
+                    <td><span
+                            th:text="${#dates.format(teaSubRecLes.record.datetime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    </td>
+                    <td><span>已通过</span><span th:text="${teaSubRecLes.teacher.teacherName}"></span><span>老师的申请</span></td>
+                    <td><span>周</span><span th:text="${teaSubRecLes.lesson.lessonDay}"></span><span
+                            th:text="${teaSubRecLes.lesson.lessonTime}"></span><span>节</span></td>
+                    <td><span th:text="${teaSubRecLes.subject.subjectName}"></span></td>
+                    <td><button type="button" class="btn btn-danger" th:onclick="javascript:toDelete([[${teaSubRecLes.record.recordId}]]);"><span class="glyphicon glyphicon-trash"
+                                                                           aria-hidden="true"></span></button></td>
+                </div>
+            </tr>
+        </table>
+    </div>
+
 </div>
-<script src="layui.js"></script>
-<script>
-layui.use(['laydate','laypage', 'layer'], function(){
-  var $=layui.jquery
-  ,laydate = layui.laydate
-  ,laypage = layui.laypage
-  ,layer = layui.layer;
-  var active = {
-	more: function(){
-      //查看更多弹窗，内容还没写，不知道怎么传参
-      layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
-        time: 20000, //20s后自动关闭
-        btn: ['明白了', '知道了', '哦']
-      });
-    }
-	,select: function(){
-      //申请选课点击后具体选择弹窗，内容没有改
-      layer.open({
-        type: 1
-        ,title: "选择具体听课时间"//不显示标题栏
-        ,closeBtn: false
-        ,area: '300px;'
-        ,shade: 0.8
-        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-        ,btn: ['确认', '取消']
-        ,btnAlign: 'c'
-        ,moveType: 1 //拖拽模式，0或者1
-        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>layer ≠ layui<br><br>layer只是作为Layui的一个弹层模块，由于其用户基数较大，所以常常会有人以为layui是layerui<br><br>layer虽然已被 Layui 收编为内置的弹层模块，但仍然会作为一个独立组件全力维护、升级。<br><br>我们此后的征途是星辰大海 ^_^</div>'
-        ,success: function(layero){
-          var btn = layero.find('.btn btn-success');
-          btn.find('.btn btn-danger');
-        }
-      });
-    }
-  };
-	$('#table .btn').on('click', function(){
-    var othis = $(this), method = othis.data('method');
-    active[method] ? active[method].call(this, othis) : '';
-  });
-  
-  //日期范围
-  laydate.render({
-    elem: '#start_time'
-	,calendar: true
-	,theme: '#393D49'
-	,btns: ['confirm']
-  });
-  laydate.render({
-    elem: '#end_time'
-	,calendar: true
-	,theme: '#393D49'
-	,btns: ['confirm']
-  });
-  
-   
-});
-</script>
-<script type="text/javascript" src="js/bootstrap-table.js"></script>
 </body>
+<script src="layui.js"></script>
+<script type="text/javascript" src="js/bootstrap-table.js"></script>
 </html>

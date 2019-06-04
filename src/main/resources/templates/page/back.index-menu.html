@@ -1,110 +1,127 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>主页-MENU</title>
-  <!-- 引入Layui的CSS文件和JS文件 -->
-  <link rel="stylesheet" href="css/layui.css">
-  <script src="js/layui.js"></script>
-  <!-- 引入Bootstrap的CSS文件和JS文件 -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <script src="js/bootstrap.min.js"></script>
-  <style type="text/css">
-      html,body{
-	      height:100%;
-		  background: #2f323a;
-	  }
-      i,span{
-		  color:rgb(121, 121, 121);
-          font-size: medium;
-		  margin-top: 1em;
-      }
-	  ul.nav-stacked li a:active, ul.nav-stacked li a:hover, ul.nav-stacked li a:focus {
+    <meta charset="utf-8">
+    <title>主页-MENU</title>
+    <script src="js/jquery-3.4.1.js"></script>
+    <!-- 引入Layui的CSS文件和JS文件 -->
+    <link rel="stylesheet" href="css/layui.css">
+    <script src="js/layui.js"></script>
+    <!-- 引入Bootstrap的CSS文件和JS文件 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            background: #2f323a;
+        }
 
-		background-color: #4ECDC4;
-	  }
-	  ul.nav-stacked li a:active span, ul.nav-stacked li a:hover span, ul.nav-stacked li a:focus span{
+        i, span {
+            color: rgb(121, 121, 121);
+            font-size: medium;
+            margin-top: 1em;
+        }
 
-		color:white;
-	  }
-      img{
-          margin: 0 auto;
-          width: 30%;
-          height: 30%;
-      }
-      img.head-portrit{
-          width: 80%;
-          height: 80%;
-      }
-      li{
-          cursor: pointer;
-      }
-      h4 {
-          color: #f2f2f2;
-		  font-weight: 700;
-		  font-size: 16px;
-      }
+        ul.nav-stacked li a:active, ul.nav-stacked li a:hover, ul.nav-stacked li a:focus {
 
-  </style>
+            background-color: #4ECDC4;
+        }
+
+        ul.nav-stacked li a:active span, ul.nav-stacked li a:hover span, ul.nav-stacked li a:focus span {
+
+            color: white;
+        }
+
+        img {
+            margin: 0 auto;
+            width: 30%;
+            height: 30%;
+        }
+
+        img.head-portrit {
+            width: 80%;
+            height: 80%;
+        }
+
+        li {
+            cursor: pointer;
+        }
+
+        h4 {
+            color: #f2f2f2;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+    </style>
     <script th:inlne="javascript">
         var userIdentity;
-        userIdentity=parent.test();
+        userIdentity = parent.test();
         alert(userIdentity);
     </script>
 </head>
 <body>
-    <div style="width:100%;height:100%;background: #2f323a;">
-        <!-- sidebar menu start-->
-        <ul class="nav nav-pills nav-stacked text-center">
-            <p class="centered" style="margin-top: 0.4em"><img src="images/head.jpg" class="img-circle head-portrit" style="weight:80px"></p>
-            <b><h4 class="centered" th:text="${teacherName}">管理员</h4></b>
-            <li class="mt" style="margin-top: 0px">
-                <a onclick="parent.my_inf()">
-                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true" style="margin-right:2em;margin-left:10px;" ></span><span>我的信息</span>
-                </a>
-            </li>
-            <li class="mt" style="margin-top: 0px" th:if="${userIdentity} ne 0">
-                <a onclick="parent.sup_rec()">
-                    <span class="glyphicon glyphicon-file" aria-hidden="true" style="margin-right:2em;margin-left:10px;" ></span><span>听课记录</span>
-                </a>
-            </li>
-            <li class="mt" style="margin-top: 0px">
-                <a onclick="parent.mag_inf()">
-                    <span class="glyphicon glyphicon-wrench" aria-hidden="true" style="margin-right:2em;margin-left:10px;" ></span><span>信息管理</span>
-                </a>
-            </li>
-            <li class="mt" style="margin-top: 0px" th:if="${userIdentity} ne 0">
-                <a onclick="parent.app_rev()">
-                    <span class="glyphicon glyphicon-hand-right" aria-hidden="true" style="margin-right:2em;margin-left:10px;" ></span><span>申请听课</span>
-                </a>
-            </li>
-            <li class="mt" style="margin-top: 0px" th:if="${userIdentity} ne 0">
-                <a onclick="parent.mag_sup()" th:if="${userIdentity} ne 3">
-                    <span class="glyphicon glyphicon-hand-left" aria-hidden="true" style="margin-right:2em;margin-left:10px;" ></span><span>安排听课</span>
-                </a>
-            </li>
-            <li class="mt" style="margin-top: 0px" th:if="${userIdentity} eq 0">
-                <a onclick="parent.mag_user()">
-                    <span class="glyphicon glyphicon-user" aria-hidden="true" style="margin-right:2em;margin-left:10px;" ></span><span>用户管理</span>
-                </a>
-            </li>
-            <li class="mt" style="margin-top: 0px" th:if="${userIdentity} eq 1">
-                <a onclick="parent.ent_rev()">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-right:2em;margin-left:10px;" ></span><span>录入评价</span>
-                </a>
-            </li>
-            <li class="mt" style="margin-top: 0px" th:if="${userIdentity} ne 0">
-                <a onclick="parent.history()">
-                    <span class="glyphicon glyphicon-comment" aria-hidden="true" style="margin-right:2em;margin-left:10px;" ></span><span>消息管理</span>
-                </a>
-            </li>
-            <!--<li>-->
-                <!--<a href="google_maps.html">-->
-                    <!--<i class="fa fa-map-marker"></i>-->
-                    <!--<span>Google Maps </span>-->
-                <!--</a>-->
-        </ul>
-        <!-- sidebar menu end-->
-    </div>
+<div style="width:100%;height:100%;background: #2f323a;">
+    <!-- sidebar menu start-->
+    <ul class="nav nav-pills nav-stacked text-center">
+        <p class="centered" style="margin-top: 0.4em"><img src="images/head.jpg" class="img-circle head-portrit"
+                                                           style="weight:80px"></p>
+        <b><h4 class="centered" th:text="${teacherName}">管理员</h4></b>
+        <li class="mt" style="margin-top: 0px">
+            <a onclick="parent.my_inf()">
+                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"
+                      style="margin-right:2em;margin-left:10px;"></span><span>我的信息</span>
+            </a>
+        </li>
+        <li class="mt" style="margin-top: 0px" th:if="${userIdentity} ne 0">
+            <a onclick="parent.sup_rec()">
+                <span class="glyphicon glyphicon-file" aria-hidden="true"
+                      style="margin-right:2em;margin-left:10px;"></span><span>听课记录</span>
+            </a>
+        </li>
+        <li class="mt" style="margin-top: 0px">
+            <a onclick="parent.mag_inf()">
+                <span class="glyphicon glyphicon-wrench" aria-hidden="true"
+                      style="margin-right:2em;margin-left:10px;"></span><span>信息管理</span>
+            </a>
+        </li>
+        <li class="mt" style="margin-top: 0px" th:if="${userIdentity} ne 0">
+            <a onclick="parent.app_rev()">
+                <span class="glyphicon glyphicon-hand-right" aria-hidden="true"
+                      style="margin-right:2em;margin-left:10px;"></span><span>申请听课</span>
+            </a>
+        </li>
+        <li class="mt" style="margin-top: 0px" th:if="${userIdentity} ne 0">
+            <a onclick="parent.mag_sup()" th:if="${userIdentity} ne 3">
+                <span class="glyphicon glyphicon-hand-left" aria-hidden="true"
+                      style="margin-right:2em;margin-left:10px;"></span><span>安排听课</span>
+            </a>
+        </li>
+        <li class="mt" style="margin-top: 0px" th:if="${userIdentity} eq 0">
+            <a onclick="parent.mag_user()">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"
+                      style="margin-right:2em;margin-left:10px;"></span><span>用户管理</span>
+            </a>
+        </li>
+        <li class="mt" style="margin-top: 0px" th:if="${userIdentity} eq 1">
+            <a onclick="parent.ent_rev()">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"
+                      style="margin-right:2em;margin-left:10px;"></span><span>录入评价</span>
+            </a>
+        </li>
+        <li class="mt" style="margin-top: 0px" th:if="${userIdentity} ne 0">
+            <a onclick="parent.history()">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"
+                      style="margin-right:2em;margin-left:10px;"></span><span>消息管理</span>
+            </a>
+        </li>
+        <!--<li>-->
+        <!--<a href="google_maps.html">-->
+        <!--<i class="fa fa-map-marker"></i>-->
+        <!--<span>Google Maps </span>-->
+        <!--</a>-->
+    </ul>
+    <!-- sidebar menu end-->
+</div>
 </body>
 </html>
